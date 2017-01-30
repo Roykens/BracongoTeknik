@@ -1,0 +1,230 @@
+#-start--
+dataClass=com.royken.teknik.entities.Zone
+tableName=zones
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=code
+columnName=code
+# --field-end--
+# --field-start--
+fieldName=nom
+columnName=nom
+# --field-end--
+# --field-start--
+fieldName=idServeur
+columnName=idServeur
+# --field-end--
+# --field-start--
+fieldName=cahierCode
+columnName=cahierCode
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.Bloc
+tableName=blocs
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idServeur
+columnName=idServeur
+# --field-end--
+# --field-start--
+fieldName=idZone
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --field-start--
+fieldName=code
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.Organe
+tableName=organes
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idServeur
+# --field-end--
+# --field-start--
+fieldName=idBloc
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --field-start--
+fieldName=code
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.SousOrgane
+tableName=sousorganes
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idServeur
+# --field-end--
+# --field-start--
+fieldName=idOrgane
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --field-start--
+fieldName=code
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.Element
+tableName=elements
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idServeur
+# --field-end--
+# --field-start--
+fieldName=sousOrganeId
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --field-start--
+fieldName=code
+# --field-end--
+# --field-start--
+fieldName=criteriaAlpha
+# --field-end--
+# --field-start--
+fieldName=valMin
+# --field-end--
+# --field-start--
+fieldName=valMax
+# --field-end--
+# --field-start--
+fieldName=guideSaisie
+# --field-end--
+# --field-start--
+fieldName=valeurNormale
+# --field-end--
+# --field-start--
+fieldName=valeurType
+# --field-end--
+# --field-start--
+fieldName=hasBorn
+# --field-end--
+# --field-start--
+fieldName=periode
+# --field-end--
+# --field-start--
+fieldName=unite
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.Utilisateur
+tableName=users
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=login
+# --field-end--
+# --field-start--
+fieldName=mdp
+# --field-end--
+# --field-start--
+fieldName=role
+# --field-end--
+# --field-start--
+fieldName=cahier
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+
+#################################
+# --table-start--
+dataClass=com.royken.teknik.entities.Reponse
+tableName=reponse
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=idElement
+# --field-end--
+# --field-start--
+fieldName=code
+# --field-end--
+# --field-start--
+fieldName=nom
+# --field-end--
+# --field-start--
+fieldName=valeur
+# --field-end--
+# --field-start--
+fieldName=compteur
+# --field-end--
+# --field-start--
+fieldName=date
+# --field-end--
+# --field-start--
+fieldName=user
+# --field-end--
+# --field-start--
+fieldName=cahier
+# --field-end--
+# --field-start--
+fieldName=valeurCorrecte
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

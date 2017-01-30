@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/b"
+    tools:context="com.royken.teknik.activities.TimeChooseActivity"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="HORAIRE"
+        android:id="@+id/button2"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="6H MATIN"
+        android:id="@+id/button3"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SHIFT"
+        android:id="@+id/button4"
+        android:layout_gravity="center_vertical" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="TOUT LES 2H"
+        android:id="@+id/button5"
+        android:layout_gravity="center_vertical" />
+</LinearLayout>

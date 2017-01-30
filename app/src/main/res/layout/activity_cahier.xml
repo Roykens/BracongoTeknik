@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/b"
+    android:orientation="vertical"
+    tools:context="com.royken.teknik.CahierActivity">
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="RELEVE TRAITEMENT EAU"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/button2"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="GROUPE ELECTROGENE"
+        android:id="@+id/button3"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ELECTRICITE"
+        android:id="@+id/button4"
+        android:layout_gravity="center_vertical" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="CHAUD"
+        android:id="@+id/button5"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="AIR"
+        android:id="@+id/button6"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="FROID"
+        android:id="@+id/button7"
+        android:layout_gravity="center_vertical" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="EAU"
+        android:id="@+id/button8"
+        android:layout_gravity="center_vertical" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="USINE A GLACE"
+        android:id="@+id/button9"
+        android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="COMPRESSEURS 40b"
+        android:id="@+id/button10"
+        android:layout_gravity="center_vertical" />
+
+</LinearLayout>
