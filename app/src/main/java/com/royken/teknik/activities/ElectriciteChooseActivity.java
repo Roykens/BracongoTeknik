@@ -1,16 +1,18 @@
 package com.royken.teknik.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.royken.teknik.R;
-import com.royken.teknik.database.DatabaseHelper;
 
-public class TimeChooseActivity extends AppCompatActivity {
+/**
+ * Created by royken on 31/01/17.
+ */
+public class ElectriciteChooseActivity extends AppCompatActivity {
 
     private static final String ARG_ORGANEID = "organeId";
     private static final String ARG_HORAIRE = "horaireId";
@@ -42,11 +44,7 @@ public class TimeChooseActivity extends AppCompatActivity {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TimeChooseActivity.this, ElementActivity.class);
-                intent.putExtra(ARG_ORGANEID,organeId);
-                intent.putExtra(ARG_HORAIRE,2);
-                intent.putExtra(ARG_CAHIERID,cahierId);
-                startActivity(intent);
+                Toast.makeText(getApplication(), "Aucune donnée", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -57,10 +55,10 @@ public class TimeChooseActivity extends AppCompatActivity {
             }
         });
 
-        b1.setOnClickListener(new View.OnClickListener() {
+      /*  b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TimeChooseActivity.this, ElementActivity.class);
+             //   Intent intent = new Intent(TimeChooseActivity.this, ElementActivity.class);
                 intent.putExtra(ARG_ORGANEID,organeId);
                 intent.putExtra(ARG_HORAIRE,0);
                 intent.putExtra(ARG_CAHIERID,cahierId);
@@ -74,11 +72,10 @@ public class TimeChooseActivity extends AppCompatActivity {
                 Intent intent = new Intent(TimeChooseActivity.this, ElementActivity.class);
                 intent.putExtra(ARG_ORGANEID,organeId);
                 intent.putExtra(ARG_HORAIRE,3);
-                intent.putExtra(ARG_CAHIERID,cahierId);
                 startActivity(intent);
             }
         });
-
+*/
 
     }
 }

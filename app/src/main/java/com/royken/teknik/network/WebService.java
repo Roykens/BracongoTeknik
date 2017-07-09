@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.royken.teknik.entities.Bloc;
+import com.royken.teknik.entities.Donnees;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.SousOrgane;
@@ -15,7 +16,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 /**
  * Created by royken on 30/12/16.
@@ -40,6 +43,11 @@ public interface WebService {
     @GET("/teknik/api/teknik/users")
     Call<List<Utilisateur>> getAllUtilisateurs();
 
+    @POST("/teknik/api/teknik/reponse")
+    Call<Donnees> envoyerReponse(@Body Donnees donnees);
+
+
+
     public static Gson gson = new GsonBuilder()
             .disableHtmlEscaping()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -49,7 +57,7 @@ public interface WebService {
             .excludeFieldsWithoutExposeAnnotation().create();
 
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.106:8080/")
+            .baseUrl("http://192.168.1.100:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 }

@@ -11,7 +11,19 @@
     <item
         android:id="@+id/menu_deconnexion"
         app:showAsAction="always"
-        android:title="Deconnxion"
+        android:title="Deconnexion"
         android:icon="@android:drawable/ic_secure"/>
+
+    <item
+        android:id="@+id/menu_update"
+        app:showAsAction="always"
+        android:title="Paramètres"
+        android:icon="@android:drawable/ic_menu_edit"/>
+
+    <item
+        android:id="@+id/menu_settings"
+        app:showAsAction="always"
+        android:title="Paramètres"
+        android:icon="@android:drawable/ic_menu_manage"/>
 
 </menu>

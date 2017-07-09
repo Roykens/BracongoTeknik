@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,29 +36,29 @@ public class CahierActivity extends AppCompatActivity {
     Dao<Utilisateur, Integer> userDao;
 
     private Button tratEau;
-    private Button groupeElec;
-    private Button elect;
-    private Button chaud;
-    private Button air;
-    private Button froid;
-    private Button eau;
+    private Button electricite;
+    private Button mecanique;
+    //private Button eau;
     private Button usineAglace;
-    private Button compresseur;
+    //private Button compresseur;
     Utilisateur u;
+    private Dao<Reponse, Integer> reponseDao;
+    private List<Reponse> reponses;
+    private boolean isExporting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cahier);
         tratEau = (Button)findViewById(R.id.button2);
-        groupeElec = (Button)findViewById(R.id.button3);
-        elect = (Button)findViewById(R.id.button4);
-        chaud = (Button)findViewById(R.id.button5);
-        air = (Button)findViewById(R.id.button6);
-        froid = (Button)findViewById(R.id.button7);
-        eau = (Button)findViewById(R.id.button8);
-        usineAglace = (Button)findViewById(R.id.button9);
-        compresseur = (Button)findViewById(R.id.button10);
+        electricite = (Button)findViewById(R.id.button3);
+        //elect = (Button)findViewById(R.id.button4);
+        //chaud = (Button)findViewById(R.id.button5);
+        //air = (Button)findViewById(R.id.button6);
+        mecanique = (Button)findViewById(R.id.button5);
+        //eau = (Button)findViewById(R.id.button8);
+        usineAglace = (Button)findViewById(R.id.button4);
+        //compresseur = (Button)findViewById(R.id.button10);
 
         try {
             userDao = getHelper().getUtilisateurDao();
@@ -70,39 +71,41 @@ public class CahierActivity extends AppCompatActivity {
         tratEau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("OTE")){
+               // if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("OTE")){
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
                     intent.putExtra(ARG_CAHIERID, 0);
                     startActivity(intent);
 
-                }
-                else {
+             //   }
+               /* else {
                     Toast.makeText(getApplicationContext(),"Vous n'avez pas les droits",Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
 
-        groupeElec.setOnClickListener(new View.OnClickListener() {
+        electricite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("GPE")){
+              //  if (u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("GPE")) {
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
                     intent.putExtra(ARG_CAHIERID, 1);
                     startActivity(intent);
 
+              //  }
+               /* else {
+                    Toast.makeText(getApplicationContext(), "Vous n'avez pas les droits", Toast.LENGTH_LONG).show();
                 }
-                else {
-                    Toast.makeText(getApplicationContext(),"Vous n'avez pas les droits",Toast.LENGTH_LONG).show();
-                }
+                */
 
             }
         });
 
+            /*
         elect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("ELE")){
+                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("ELE") || u.getCahier().equalsIgnoreCase("GPE")){
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
                     intent.putExtra(ARG_CAHIERID, 2);
                     startActivity(intent);
@@ -117,7 +120,7 @@ public class CahierActivity extends AppCompatActivity {
         chaud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("CHA")){
+                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("CHA") || u.getCahier().equalsIgnoreCase("GPE")){
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
                     intent.putExtra(ARG_CAHIERID, 3);
                     startActivity(intent);
@@ -144,25 +147,29 @@ public class CahierActivity extends AppCompatActivity {
 
             }
         });
+            */
 
-        froid.setOnClickListener(new View.OnClickListener() {
+        mecanique.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("FRO")){
+               /* if (u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("FRO")) {
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
-                    intent.putExtra(ARG_CAHIERID, 5);
+                    intent.putExtra(ARG_CAHIERID, 2);
                     startActivity(intent);
 
+                } else {
+                    Toast.makeText(getApplicationContext(), "Vous n'avez pas les droits", Toast.LENGTH_LONG).show();
                 }
-                else {
-                    Toast.makeText(getApplicationContext(),"Vous n'avez pas les droits",Toast.LENGTH_LONG).show();
-                }
+                */
+                Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
+                intent.putExtra(ARG_CAHIERID, 3);
+                startActivity(intent);
 
             }
         });
 
-        eau.setOnClickListener(new View.OnClickListener() {
+      /*  eau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("EAU")){
@@ -177,24 +184,27 @@ public class CahierActivity extends AppCompatActivity {
 
             }
         });
+            */
 
         usineAglace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("UAG")){
+             //  if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("UAG")){
                     Intent intent = new Intent(CahierActivity.this, TimeChooseActivity.class);
-                    intent.putExtra(ARG_CAHIERID, 7);
+                    intent.putExtra(ARG_CAHIERID, 2);
                     startActivity(intent);
 
-                }
-                else {
+              //  }
+               /* else {
                     Toast.makeText(getApplicationContext(),"Vous n'avez pas les droits",Toast.LENGTH_LONG).show();
                 }
+                */
+               // Toast.makeText(getApplicationContext(),"Aucune donnée",Toast.LENGTH_LONG).show();
 
             }
         });
 
-        compresseur.setOnClickListener(new View.OnClickListener() {
+       /* compresseur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(u.getRole().equalsIgnoreCase("admin") || u.getCahier().equalsIgnoreCase("COM")){
@@ -209,6 +219,7 @@ public class CahierActivity extends AppCompatActivity {
 
             }
         });
+            */
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -223,9 +234,6 @@ public class CahierActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -249,13 +257,44 @@ public class CahierActivity extends AppCompatActivity {
                     b.show();
                 }
                 else {
-                    final Dao<Reponse, Integer> reponseDao;
-                    reponseDao = getHelper().getReponseDao();
-                    List<Reponse> reponses;
-                    reponses = reponseDao.queryForAll();
-                    ExportData data = new ExportData(this, reponses);
-                    data.exportReponse();
-                    Toast.makeText(this, "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setTitle(" !!!! EXPORTATION");
+                    dialogBuilder.setMessage("Veuillez confirmer l'exportation. Celà supprimera vos données");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            if(isExporting  == false){
+                                isExporting = true;
+                            try {
+                                long offset = settings.getLong("com.royken.offset", 0);
+                                reponseDao = getHelper().getReponseDao();
+                                long nombre = reponseDao.countOf();
+                                if (offset == 0) {
+                                    reponses = reponseDao.queryForAll();
+                                } else {
+                                    reponses = reponseDao.queryBuilder().offset(offset).limit(nombre - offset).query();
+                                }
+
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putLong("com.royken.offset", nombre);
+                                editor.commit();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+
+                            ExportData data = new ExportData(getApplicationContext(), reponses);
+                            data.exportReponse();
+                            Toast.makeText(getApplicationContext(), "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                            isExporting = false;
+                            }
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -64,6 +64,8 @@ public class ElementAdapter extends BaseAdapter {
     private Uri imageUri;
     private Button pic;
     private String cahier;
+    private String organe;
+    private String sousOrgane;
     SousOrgane so = null;
     Organe o = null;
     Bloc b = null;
@@ -113,13 +115,6 @@ public class ElementAdapter extends BaseAdapter {
             holder.photo = (Button)convertView.findViewById(R.id.btnPhoto);
             holder.btn_Enreg = (Button)convertView.findViewById(R.id.btnEnreg);
             convertView.setTag(holder);
-           // convertView.setTag(R.id.nom, holder.tv_Nom);
-           // convertView.setTag(R.id.editText2, holder.txt_Valeur);
-           // convertView.setTag(R.id.textView5, holder.tv_Guide);
-           // convertView.setTag(R.id.btnEnreg, holder.btn_Enreg);
-           // convertView.setTag(R.id.textView7, holder.tv_ValeurP);
-            //convertView.setTag(R.id.btnPhoto,holder.photo);
-            //convertView.setTag(R.id.textView8,holder.tv_guide);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -133,11 +128,6 @@ public class ElementAdapter extends BaseAdapter {
                     .orderBy("id", false).where().eq("idElement", e1.getId()).queryForFirst();
             so = sousODao.queryBuilder().where().eq("idServeur", elements.get(position).getSousOrganeId()).queryForFirst();
             o = organeDao.queryBuilder().where().eq("idServeur", so.getIdOrgane()).queryForFirst();
-            // b= blocDao.queryBuilder().where().eq("idServeur",o.getIdBloc()).queryForFirst();
-            //z = zoneDao.queryBuilder().where().eq("idServeur",b.getIdZone()).queryForFirst();
-            //cahier = CahierDummy.getCahierByCode(z.getCahierCode());
-            //Log.i("CAHIEEEEEEERRRRRRRRR",cahier);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,7 +155,8 @@ public class ElementAdapter extends BaseAdapter {
                         b = blocDao.queryBuilder().where().eq("idServeur", o.getIdBloc()).queryForFirst();
                         z = zoneDao.queryBuilder().where().eq("idServeur", b.getIdZone()).queryForFirst();
                         cahier = CahierDummy.getCahierByCode(z.getCahierCode());
-
+                        organe = o.getNom();
+                        sousOrgane = so.getNom();
                         reponseDao = getHelper().getReponseDao();
                         userDao = getHelper().getUtilisateurDao();
                         settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -177,92 +168,139 @@ public class ElementAdapter extends BaseAdapter {
                                 .orderBy("id", false).where().eq("idElement", e.getId()).queryForFirst();
 
                         if (e.isHasBorn()) {
+                            if (!isNumeric(holder.txt_Valeur.getText().toString().trim())) {
+                                Reponse re = new Reponse();
+                                re.setNom(e.getNom());
+                                re.setCode(e.getCode());
+
+                                re.setCompteur(1);
+                                re.setDate(new Date());
+                                re.setUser(u.getNom());
+                                re.setIdElement(e.getId());
+                                re.setValeurCorrecte(false);
+                                re.setCahier(cahier);
+                                re.setOrgane(organe);
+                                re.setSousOrgane(sousOrgane);
+                                re.setValeur(holder.txt_Valeur.getText().toString().trim());
+                                reponseDao.create(re);
+                                holder.tv_Guide.setTextColor(Color.GREEN);
+                                holder.tv_Guide.setText("Enregistré");
+                                //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                holder.txt_Valeur.setText("");
+                            }
+
+                            else {
+
                             Double valeur = Double.parseDouble(holder.txt_Valeur.getText().toString().trim());
 
                             if (r != null) {
-                                //Log.i("LA REPONSE", r.toString());
-                              //  Log.i("L'ELEMENTTTTT ", e.toString());
-                                if (e.isCriteriaAlpha()) {
-                                    if (Double.parseDouble(r.getValeur()) > valeur || (Double.parseDouble(r.getValeur()) + e.getValMax()) < valeur) {
-                                        Reponse re = new Reponse();
-                                        re.setNom(e.getNom());
-                                        re.setCode(e.getCode());
-                                        re.setCompteur(r.getCompteur() + 1);
-                                        re.setDate(new Date());
-                                        re.setUser(u.getNom());
-                                        re.setIdElement(e.getId());
-                                        re.setValeurCorrecte(false);
-                                  //      Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
-                                        re.setCahier(cahier);
-                                        re.setValeur(valeur + "");
-                                        reponseDao.create(re);
-                                        holder.tv_Guide.setTextColor(Color.GREEN);
-                                        holder.tv_Guide.setText("Enregistré");
-                                        //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
-                                        holder.txt_Valeur.setText("");
-                                        //holder.tv_Guide.setTextColor(Color.RED);
-                                        //holder.tv_Guide.setText("Valeur Hors Bornes");
-                                        //Toast.makeText(mContext,"Valeur Hors Bornes",Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Reponse re = new Reponse();
-                                        re.setNom(e.getNom());
-                                        re.setCode(e.getCode());
-                                        re.setCompteur(r.getCompteur() + 1);
-                                        re.setDate(new Date());
-                                        re.setUser(u.getNom());
-                                      //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
-                                        re.setCahier(cahier);
-                                        re.setValeurCorrecte(true);
-                                        re.setIdElement(e.getId());
-                                        re.setValeur(valeur + "");
-                                        reponseDao.create(re);
-                                        holder.tv_Guide.setTextColor(Color.GREEN);
-                                        holder.tv_Guide.setText("Enregistré");
-                                        // Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
-                                        holder.txt_Valeur.setText("");
-                                    }
-                                } else {
 
-                                    if (e.getValMin() > valeur || e.getValMax() < valeur) {
-                                        Reponse re = new Reponse();
-                                        re.setNom(e.getNom());
-                                        re.setCode(e.getCode());
-                                        re.setCompteur(r.getCompteur() + 1);
-                                        re.setDate(new Date());
-                                        re.setUser(u.getNom());
-                                        re.setIdElement(e.getId());
-                                        re.setValeurCorrecte(false);
-                                      //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
-                                        re.setCahier(cahier);
-                                        re.setValeur(valeur + "");
-                                        reponseDao.create(re);
-                                        holder.tv_Guide.setTextColor(Color.GREEN);
-                                        holder.tv_Guide.setText("Enregistré");
-                                        //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
-                                        holder.txt_Valeur.setText("");
-                                       // holder.tv_Guide.setTextColor(Color.RED);
-                                       // holder.tv_Guide.setText("Valeur Inférieure à : " + e.getValMin() + " ou Supérieure à : " + e.getValMax());
-                                        //Toast.makeText(mContext, "Valeur Inférieure à : " + e.getValMin() + " ou Supérieure à : " + e.getValMax(), Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Reponse re = new Reponse();
-                                        re.setNom(e.getNom());
-                                        re.setCode(e.getCode());
-                                        re.setCompteur(r.getCompteur() + 1);
-                                        re.setDate(new Date());
-                                        re.setUser(u.getNom());
-                                        re.setIdElement(e.getId());
-                                        re.setValeurCorrecte(true);
-                                       // Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
-                                        re.setCahier(cahier);
-                                        re.setValeur(valeur + "");
-                                        reponseDao.create(re);
-                                        holder.tv_Guide.setTextColor(Color.GREEN);
-                                        holder.tv_Guide.setText("Enregistré");
-                                        //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
-                                        holder.txt_Valeur.setText("");
-                                    }
+                                if (!isNumeric(r.getValeur())) {
+                                    Reponse re = new Reponse();
+                                    re.setNom(e.getNom());
+                                    re.setCode(e.getCode());
+                                    re.setCompteur(r.getCompteur() + 1);
+                                    re.setDate(new Date());
+                                    re.setUser(u.getNom());
+                                    re.setIdElement(e.getId());
+                                    re.setValeurCorrecte(false);
+                                    re.setCahier(cahier);
+                                    re.setOrgane(organe);
+                                    re.setSousOrgane(sousOrgane);
+                                    re.setValeur(holder.txt_Valeur.getText().toString().trim());
+                                    reponseDao.create(re);
+                                    holder.tv_Guide.setTextColor(Color.GREEN);
+                                    holder.tv_Guide.setText("Enregistré");
+                                    //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                    holder.txt_Valeur.setText("");
                                 }
+                                ///////////////////////////////////////
+                                else {
 
+                                    if (e.isCriteriaAlpha()) {
+                                        if (Double.parseDouble(r.getValeur()) > valeur || (Double.parseDouble(r.getValeur()) + e.getValMax()) < valeur) {
+                                            Reponse re = new Reponse();
+                                            re.setNom(e.getNom());
+                                            re.setCode(e.getCode());
+                                            re.setCompteur(r.getCompteur() + 1);
+                                            re.setDate(new Date());
+                                            re.setUser(u.getNom());
+                                            re.setIdElement(e.getId());
+                                            re.setValeurCorrecte(false);
+                                            //      Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
+                                            re.setCahier(cahier);
+                                            re.setOrgane(organe);
+                                            re.setSousOrgane(sousOrgane);
+                                            re.setValeur(valeur + "");
+                                            reponseDao.create(re);
+                                            holder.tv_Guide.setTextColor(Color.GREEN);
+                                            holder.tv_Guide.setText("Enregistré");
+                                            //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                            holder.txt_Valeur.setText("");
+                                        } else {
+                                            Reponse re = new Reponse();
+                                            re.setNom(e.getNom());
+                                            re.setCode(e.getCode());
+                                            re.setCompteur(r.getCompteur() + 1);
+                                            re.setDate(new Date());
+                                            re.setUser(u.getNom());
+                                            //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
+                                            re.setCahier(cahier);
+                                            re.setOrgane(organe);
+                                            re.setSousOrgane(sousOrgane);
+                                            re.setValeurCorrecte(true);
+                                            re.setIdElement(e.getId());
+                                            re.setValeur(valeur + "");
+                                            reponseDao.create(re);
+                                            holder.tv_Guide.setTextColor(Color.GREEN);
+                                            holder.tv_Guide.setText("Enregistré");
+                                            // Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                            holder.txt_Valeur.setText("");
+                                        }
+                                    } else {
+
+                                        if (e.getValMin() > valeur || e.getValMax() < valeur) {
+                                            Reponse re = new Reponse();
+                                            re.setNom(e.getNom());
+                                            re.setCode(e.getCode());
+                                            re.setCompteur(r.getCompteur() + 1);
+                                            re.setDate(new Date());
+                                            re.setUser(u.getNom());
+                                            re.setIdElement(e.getId());
+                                            re.setValeurCorrecte(false);
+                                            //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
+                                            re.setCahier(cahier);
+                                            re.setOrgane(organe);
+                                            re.setSousOrgane(sousOrgane);
+                                            re.setValeur(valeur + "");
+                                            reponseDao.create(re);
+                                            holder.tv_Guide.setTextColor(Color.GREEN);
+                                            holder.tv_Guide.setText("Enregistré");
+                                            //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                            holder.txt_Valeur.setText("");
+                                        } else {
+                                            Reponse re = new Reponse();
+                                            re.setNom(e.getNom());
+                                            re.setCode(e.getCode());
+                                            re.setCompteur(r.getCompteur() + 1);
+                                            re.setDate(new Date());
+                                            re.setUser(u.getNom());
+                                            re.setIdElement(e.getId());
+                                            re.setValeurCorrecte(true);
+                                            // Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
+                                            re.setCahier(cahier);
+                                            re.setOrgane(organe);
+                                            re.setSousOrgane(sousOrgane);
+                                            re.setValeur(valeur + "");
+                                            reponseDao.create(re);
+                                            holder.tv_Guide.setTextColor(Color.GREEN);
+                                            holder.tv_Guide.setText("Enregistré");
+                                            //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
+                                            holder.txt_Valeur.setText("");
+                                        }
+                                    }
+
+                                }
                             } else {
                                 //Toast.makeText(mContext,"Pas de valeur",Toast.LENGTH_LONG).show();
                                 if (!e.isCriteriaAlpha()) {
@@ -277,15 +315,14 @@ public class ElementAdapter extends BaseAdapter {
                                         re.setValeurCorrecte(false);
                                         //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                                         re.setCahier(cahier);
+                                        re.setOrgane(organe);
+                                        re.setSousOrgane(sousOrgane);
                                         re.setValeur(valeur + "");
                                         reponseDao.create(re);
                                         holder.tv_Guide.setTextColor(Color.GREEN);
                                         holder.tv_Guide.setText("Enregistré");
                                         //Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
                                         holder.txt_Valeur.setText("");
-                                        //holder.tv_Guide.setTextColor(Color.RED);
-                                        //holder.tv_Guide.setText("Valeur Inférieure à : " + e.getValMin() + " ou Supérieure à : " + e.getValMax());
-                                        // Toast.makeText(mContext, "Valeur Inférieure à : " + e.getValMin() + " ou Supérieure à : " + e.getValMax(), Toast.LENGTH_LONG).show();
                                     } else {
                                         Reponse re = new Reponse();
                                         re.setNom(e.getNom());
@@ -296,6 +333,8 @@ public class ElementAdapter extends BaseAdapter {
                                         re.setValeurCorrecte(true);
                                         //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                                         re.setCahier(cahier);
+                                        re.setOrgane(organe);
+                                        re.setSousOrgane(sousOrgane);
                                         re.setIdElement(e.getId());
                                         re.setValeur(valeur + "");
                                         reponseDao.create(re);
@@ -319,6 +358,8 @@ public class ElementAdapter extends BaseAdapter {
                                     re.setIdElement(e.getId());
                                     //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                                     re.setCahier(cahier);
+                                    re.setOrgane(organe);
+                                    re.setSousOrgane(sousOrgane);
                                     re.setValeur(valeur + "");
                                     reponseDao.create(re);
                                     holder.tv_Guide.setTextColor(Color.GREEN);
@@ -330,6 +371,7 @@ public class ElementAdapter extends BaseAdapter {
                                     holder.txt_Valeur.setText("");
                                 }
                             }
+                        }
                         } else {
                             Reponse re = new Reponse();
                             re.setNom(e.getNom());
@@ -340,6 +382,8 @@ public class ElementAdapter extends BaseAdapter {
                             re.setValeurCorrecte(true);
                             //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                             re.setCahier(cahier);
+                            re.setOrgane(organe);
+                            re.setSousOrgane(sousOrgane);
                             re.setIdElement(e.getId());
                             re.setValeur(holder.txt_Valeur.getText().toString().trim());
                             reponseDao.create(re);
@@ -372,7 +416,12 @@ public class ElementAdapter extends BaseAdapter {
         if(holder != null) {
 
             holder.tv_Nom.setText(elements.get(position).getId() +" "+o.getNom() + " : "+elements.get(position).getNom()+"("+elements.get(position).getUnite()+")");
-            holder.tv_Guide.setText("");
+            if(r != null){
+                holder.tv_Guide.setText(""+getDateString(r.getDate()) );
+            }
+            else {
+                holder.tv_Guide.setText("");
+            }
             holder.tv_guide.setText(elements.get(position).getGuideSaisie());
             if(r != null){
                 holder.tv_ValeurP.setText(r.getValeur());
@@ -384,16 +433,6 @@ public class ElementAdapter extends BaseAdapter {
         return   convertView;
     }
 
-  /*  @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 500;
-    }
-    */
 
     public class ViewHolder {
 
@@ -405,6 +444,10 @@ public class ElementAdapter extends BaseAdapter {
         Button btn_Enreg;
         Button photo;
         int index;
+    }
+
+    private boolean isNumeric(String str){
+        return str.trim().matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 
     private DatabaseHelper getHelper() {
@@ -432,6 +475,13 @@ public class ElementAdapter extends BaseAdapter {
                 Uri.fromFile(photo));
         imageUri = Uri.fromFile(photo);
         ((Activity)mContext).startActivityForResult(intent, TAKE_PICTURE);
+    }
+
+    private String getDateString(Date date){
+        Calendar gc = new GregorianCalendar();
+        gc.setTime(date);
+        String result = gc.get(Calendar.DAY_OF_MONTH)+"/"+(gc.get(Calendar.MONTH)+1)+"/"+gc.get(Calendar.YEAR)+" "+gc.get(Calendar.HOUR_OF_DAY)+":"+gc.get(Calendar.MINUTE);
+        return result;
     }
 
 }

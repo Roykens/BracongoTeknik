@@ -223,6 +223,12 @@ fieldName=user
 fieldName=cahier
 # --field-end--
 # --field-start--
+fieldName=organe
+# --field-end--
+# --field-start--
+fieldName=sousOrgane
+# --field-end--
+# --field-start--
 fieldName=valeurCorrecte
 # --field-end--
 # --table-fields-end--

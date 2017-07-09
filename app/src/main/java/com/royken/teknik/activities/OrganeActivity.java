@@ -43,6 +43,7 @@ public class OrganeActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "com.royken.teknik.MyPrefsFile";
     SharedPreferences settings ;
     private List<Reponse> reponses;
+    private Dao<Reponse, Integer> reponseDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,12 +128,31 @@ public class OrganeActivity extends AppCompatActivity {
                     b.show();
                 }
                 else {
-                    final Dao<Reponse, Integer> reponseDao;
-                    reponseDao = getHelper().getReponseDao();
-                    reponses = reponseDao.queryForAll();
-                    ExportData data = new ExportData(this, reponses);
-                    data.exportReponse();
-                    Toast.makeText(this, "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setTitle(" !!!! EXPORTATION");
+                    dialogBuilder.setMessage("Veuillez confirmer l'exportation. Celà supprimera vos données");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            try {
+                                reponseDao = getHelper().getReponseDao();
+                                reponses = reponseDao.queryForAll();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+
+                            ExportData data = new ExportData(getApplicationContext(), reponses);
+                            data.exportReponse();
+                            Toast.makeText(getApplicationContext(), "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

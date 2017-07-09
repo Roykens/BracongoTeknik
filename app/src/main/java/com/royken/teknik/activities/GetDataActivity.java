@@ -1,15 +1,20 @@
 package com.royken.teknik.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
@@ -46,8 +51,11 @@ public class GetDataActivity extends AppCompatActivity {
     private List<Organe> organes;
     private List<SousOrgane> sousorganes;
     private List<Zone> zones;
+    TextView _urlLink;
+    private String url;
 
     public static final String PREFS_NAME = "com.royken.teknik.MyPrefsFile";
+
     SharedPreferences settings ;
     SharedPreferences.Editor editor;
     private boolean loadData;
@@ -57,7 +65,8 @@ public class GetDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_data);
         dataBtn = (Button)findViewById(R.id.button);
-        test = (Button)findViewById(R.id.test);
+       // test = (Button)findViewById(R.id.test);
+        _urlLink = (TextView) findViewById(R.id.link_url);
         settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadData = settings.getBoolean("com.royken.data",false);
         if(loadData == true){
@@ -74,7 +83,16 @@ public class GetDataActivity extends AppCompatActivity {
                     new UtilisateurTask().execute();
                 }
             });
-            test.setOnClickListener(new View.OnClickListener() {
+            _urlLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Finish the registration screen and return to the Login activity
+                    // finish();
+                    showChangeLangDialog();
+                }
+            });
+
+           /* test.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final Dao<Utilisateur, Integer> userDao;
@@ -88,6 +106,7 @@ public class GetDataActivity extends AppCompatActivity {
 
                 }
             });
+            */
         }
     }
 
@@ -108,7 +127,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Utilisateur>> call = service.getAllUtilisateurs();
             //List<Boisson> result = call.execute().body();
@@ -154,7 +173,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Zone>> call = service.getAllZones();
             //List<Boisson> result = call.execute().body();
@@ -201,7 +220,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Bloc>> call = service.getAllBlocs();
             //List<Boisson> result = call.execute().body();
@@ -248,7 +267,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Element>> call = service.getAllElements();
             //List<Boisson> result = call.execute().body();
@@ -294,7 +313,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Organe>> call = service.getAllOrganes();
             //List<Boisson> result = call.execute().body();
@@ -340,7 +359,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.106:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
             WebService service = retrofit.create(WebService.class);
             Call<List<SousOrgane>> call = service.getAllSousOrganes();
             call.enqueue(new Callback<List<SousOrgane>>() {
@@ -386,5 +405,36 @@ public class GetDataActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(this);
         }
         return databaseHelper;
+    }
+
+    private void showChangeLangDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.url_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.input_url);
+        if(url.length() > 0){
+            edt.setText(url);
+        }
+        editor = settings.edit();
+        dialogBuilder.setTitle("Modification de l'URL");
+        dialogBuilder.setMessage("Entrer l'URL du serveur");
+        dialogBuilder.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String txt = edt.getText().toString().trim();
+                editor.putString("com.royken.url",txt);
+                editor.commit();
+                Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
+            }
+        });
+        dialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+                dialog.cancel();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 }

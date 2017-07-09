@@ -9,55 +9,72 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.GetDataActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Login"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.Login"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.MainActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.Zones"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.Zones"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.BlocActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.BlocActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.OrganeActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.OrganeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.SousOrganeActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.SousOrganeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.Data"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.Data"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.CahierList"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.CahierList"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.ElementActivity"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
-        <activity android:name=".activities.TimeChooseActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.TimeChooseActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activities.CahierActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.CahierActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activities.ManageActivity"
+            android:label="@string/title_activity_manage"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

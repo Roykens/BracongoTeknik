@@ -43,6 +43,7 @@ public class ElementActivity extends AppCompatActivity {
     private static final String ARG_ZONEID = "zoneId";
     private static final String ARG_ORGANEID = "organeId";
     private static final String ARG_HORAIRE = "horaireId";
+    private static final String ARG_CAHIERID = "cahierId";
     private DatabaseHelper databaseHelper = null;
     private ElementAdapter elementAdapter;
     private List<Element> elements;
@@ -51,6 +52,8 @@ public class ElementActivity extends AppCompatActivity {
     SharedPreferences settings ;
     private List<Reponse> reponses;
     Dao<Utilisateur, Integer> userDao;
+    private Dao<Reponse, Integer> reponseDao;
+    private boolean isExporting = false;
 
 
 
@@ -66,11 +69,13 @@ public class ElementActivity extends AppCompatActivity {
        // int zoneId = 0;
         int organeId = 0;
         int horaire = 0;
+        int cahierId = 0;
         if (intent != null) {
             //sousorganeId = intent.getIntExtra(ARG_SOUSORGANEID,0);
             //zoneId = intent.getIntExtra(ARG_ZONEID,0);
            organeId = intent.getIntExtra(ARG_ORGANEID,0);
             horaire = intent.getIntExtra(ARG_HORAIRE,0);
+            cahierId = intent.getIntExtra(ARG_CAHIERID,0);
         }
         final Dao<Element, Integer> elementDao;
         final Dao<Bloc, Integer> blocDao;
@@ -88,12 +93,25 @@ public class ElementActivity extends AppCompatActivity {
             zoneDao = getHelper().getZoneDao();
             sousOrganeDao = getHelper().getSousOrganeDao();
             List<Zone> zones = new ArrayList<>();
-            if(u.getRole().equalsIgnoreCase("admin")){
+           /* if(u.getRole().equalsIgnoreCase("admin")){
                 zones= zoneDao.queryForAll();
             }
-            else {
-                zones = zoneDao.queryBuilder().where().like("cahierCode", u.getCahier()).query();
+            */
+           // else {
+                if(cahierId == 0){
+                    zones = zoneDao.queryBuilder().where().like("cahierCode", "OTE").query();
+                }
+                if(cahierId == 1) {
+                    zones = zoneDao.queryBuilder().where().like("cahierCode", "GPE").or().like("cahierCode", "ELE").or().like("cahierCode", "CHA").or().like("cahierCode", "COM").query();
+                }
+            if(cahierId == 2){
+                zones = zoneDao.queryBuilder().where().like("cahierCode", "UAG").query();
             }
+            if(cahierId == 3) {
+                zones = zoneDao.queryBuilder().where().like("cahierCode", "AIR").or().like("cahierCode", "FRO").or().like("cahierCode", "EAU").or().like("cahierCode", "CO2").query();
+            }
+
+           // }
             List<Bloc> blocss = new ArrayList<>();
             for (Zone z : zones) {
                 List<Bloc> blocs = blocDao.queryBuilder().where().eq("idZone", z.getIdServeur()).query();
@@ -171,12 +189,43 @@ public class ElementActivity extends AppCompatActivity {
                     b.show();
                 }
                 else {
-                    final Dao<Reponse, Integer> reponseDao;
-                    reponseDao = getHelper().getReponseDao();
-                    reponses = reponseDao.queryForAll();
-                    ExportData data = new ExportData(this, reponses);
-                    data.exportReponse();
-                    Toast.makeText(this, "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setTitle(" !!!! EXPORTATION");
+                    dialogBuilder.setMessage("Veuillez confirmer l'exportation. Celà supprimera vos données");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            if(isExporting  == false){
+                                isExporting = true;
+                                try {
+                                    long offset = settings.getLong("com.royken.offset", 0);
+                                    reponseDao = getHelper().getReponseDao();
+                                    long nombre = reponseDao.countOf();
+                                    if (offset == 0) {
+                                        reponses = reponseDao.queryForAll();
+                                    } else {
+                                        reponses = reponseDao.queryBuilder().offset(offset).limit(nombre - offset).query();
+                                    }
+
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putLong("com.royken.offset", nombre);
+                                    editor.commit();
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                                ExportData data = new ExportData(getApplicationContext(), reponses);
+                                data.exportReponse();
+                                Toast.makeText(getApplicationContext(), "Données exportées avec succès", Toast.LENGTH_LONG).show();
+                                isExporting = false;
+                            }   }
+                    });
+                    dialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -188,7 +237,7 @@ public class ElementActivity extends AppCompatActivity {
         if(id == R.id.menu_deconnexion){
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
             dialogBuilder.setTitle("DECONNEXION");
-            dialogBuilder.setMessage("Veuillez confirmer la déconnexion");
+            dialogBuilder.setMessage("Veuillez confirmer la deconnexion");
             dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -222,6 +271,5 @@ public class ElementActivity extends AppCompatActivity {
         }
         return databaseHelper;
     }
-
 
 }

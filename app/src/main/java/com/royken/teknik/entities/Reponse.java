@@ -42,6 +42,12 @@ public class Reponse implements Serializable{
     @DatabaseField
     private String cahier;
 
+    @DatabaseField
+    private String organe;
+
+    @DatabaseField
+    private String sousOrgane;
+
     private boolean valeurCorrecte;
 
     public Reponse() {
@@ -125,6 +131,22 @@ public class Reponse implements Serializable{
 
     public void setValeurCorrecte(boolean valeurCorrecte) {
         this.valeurCorrecte = valeurCorrecte;
+    }
+
+    public String getOrgane() {
+        return organe;
+    }
+
+    public void setOrgane(String organe) {
+        this.organe = organe;
+    }
+
+    public String getSousOrgane() {
+        return sousOrgane;
+    }
+
+    public void setSousOrgane(String sousOrgane) {
+        this.sousOrgane = sousOrgane;
     }
 
     @Override

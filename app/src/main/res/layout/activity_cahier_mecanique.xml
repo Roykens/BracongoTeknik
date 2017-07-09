@@ -11,34 +11,32 @@
 
     <Button
         android:layout_width="match_parent"
-        android:text="RELEVE TRAITEMENT EAU"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/button2"
+        android:text="AIR"
+        android:id="@+id/button6"
         android:layout_gravity="center_vertical" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Electricité"
-        android:id="@+id/button3"
-        android:layout_gravity="center_vertical" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Usine à glace"
-        android:id="@+id/button4"
+        android:text="CO2"
+        android:id="@+id/button7"
         android:layout_gravity="center_vertical" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Mécanique"
-        android:id="@+id/button5"
+        android:text="FROID"
+        android:id="@+id/button8"
         android:layout_gravity="center_vertical" />
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="EAU"
+        android:id="@+id/button9"
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>
