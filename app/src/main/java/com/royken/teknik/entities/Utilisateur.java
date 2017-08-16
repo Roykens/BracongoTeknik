@@ -10,13 +10,18 @@ import java.io.Serializable;
 /**
  * Created by royken on 22/12/16.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "utilisateur")
 public class Utilisateur implements Serializable {
 
     private static final long serialVersionUID = -222864131214757023L;
 
     @DatabaseField
     private int id;
+
+    @Expose(serialize = true, deserialize = true)
+    @SerializedName("id")
+    @DatabaseField
+    private int idServeur;
 
     @Expose(serialize = true, deserialize = true)
     @SerializedName("login")
@@ -92,5 +97,13 @@ public class Utilisateur implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public int getIdServeur() {
+        return idServeur;
+    }
+
+    public void setIdServeur(int idServeur) {
+        this.idServeur = idServeur;
     }
 }

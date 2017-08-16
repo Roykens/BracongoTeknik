@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by royken on 22/12/16.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "sousorgane")
 public class SousOrgane implements Serializable {
 
     private static final long serialVersionUID = -22286413121475702L;

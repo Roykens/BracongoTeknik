@@ -28,6 +28,7 @@ import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
 import com.royken.teknik.network.RetrofitBuilder;
 import com.royken.teknik.network.WebService;
+import com.royken.teknik.network.util.AndroidNetworkUtility;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -65,7 +66,6 @@ public class GetDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_data);
         dataBtn = (Button)findViewById(R.id.button);
-       // test = (Button)findViewById(R.id.test);
         _urlLink = (TextView) findViewById(R.id.link_url);
         settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadData = settings.getBoolean("com.royken.data",false);
@@ -80,7 +80,20 @@ public class GetDataActivity extends AppCompatActivity {
             dataBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new UtilisateurTask().execute();
+
+                    AndroidNetworkUtility androidNetworkUtility = new AndroidNetworkUtility();
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    url = settings.getString("com.royken.url", "");
+                    if(url.isEmpty()){
+                        Toast.makeText(getApplicationContext(), "Serveur manquant", Toast.LENGTH_LONG).show();
+                    }
+                    if (!androidNetworkUtility.isConnected(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "Aucune connexion au serveur. Veuillez reéssayer plus tard", Toast.LENGTH_LONG).show();
+                    } else {
+                        new UtilisateurTask().execute();
+                    }
+
+
                 }
             });
             _urlLink.setOnClickListener(new View.OnClickListener() {
@@ -117,21 +130,19 @@ public class GetDataActivity extends AppCompatActivity {
         private String Content;
         private String Error = null;
         private ProgressDialog Dialog = new ProgressDialog(GetDataActivity.this);
-        String data ="";
+        private boolean data;
 
 
         protected void onPreExecute() {
-            Dialog.setMessage("Récupération des blocs..");
+            Dialog.setMessage("Récupération des utilisateurs..");
             Dialog.show();
         }
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Utilisateur>> call = service.getAllUtilisateurs();
-            //List<Boisson> result = call.execute().body();
-            //final List<Boisson> result;
             call.enqueue(new Callback<List<Utilisateur>>() {
                 @Override
                 public void onResponse(Call<List<Utilisateur>> call, Response<List<Utilisateur>> response) {
@@ -140,8 +151,14 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<Utilisateur, Integer> userDao;
                     try {
                         userDao = getHelper().getUtilisateurDao();
-                        //This is the way to insert data into a database table
-                           userDao.create(utilisateurs);
+                        if(!utilisateurs.isEmpty()){
+                            data  = true;
+                            userDao.create(utilisateurs);
+                        }
+                        else {
+                            data = false;
+                            Toast.makeText(getApplicationContext(),"Aucun utilisateur trouvé, Vérifiez la connexion !!!",Toast.LENGTH_LONG).show();
+                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -156,7 +173,11 @@ public class GetDataActivity extends AppCompatActivity {
 
         protected void onPostExecute(Void unused) {
             Dialog.dismiss();
-            new ZonesTask().execute();
+            Log.i("DATAAAAAAAAAAA",data+"");
+           // if(data){
+                new ZonesTask().execute();
+           // }
+
         }
 
     }
@@ -173,7 +194,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Zone>> call = service.getAllZones();
             //List<Boisson> result = call.execute().body();
@@ -186,8 +207,12 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<Zone, Integer> zoneDao;
                     try {
                         zoneDao = getHelper().getZoneDao();
-                        //This is the way to insert data into a database table
-                        zoneDao.create(zones);
+                        if(!zones.isEmpty()){
+                            zoneDao.create(zones);
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(),"Aucune zone",Toast.LENGTH_LONG).show();
+                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -220,7 +245,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Bloc>> call = service.getAllBlocs();
             //List<Boisson> result = call.execute().body();
@@ -233,8 +258,13 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<Bloc, Integer> blocDao;
                     try {
                         blocDao = getHelper().getBlocDao();
-                        //This is the way to insert data into a database table
-                        blocDao.create(blocs);
+                        if(!blocs.isEmpty()){
+                            blocDao.create(blocs);
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(),"Aucun bloc",Toast.LENGTH_LONG).show();
+                        }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -267,7 +297,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Element>> call = service.getAllElements();
             //List<Boisson> result = call.execute().body();
@@ -280,8 +310,13 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<Element, Integer> elementDao;
                     try {
                         elementDao = getHelper().getElementDao();
-                        //This is the way to insert data into a database table
-                        elementDao.create(elements);
+                        if(!elements.isEmpty()){
+                            elementDao.create(elements);
+                        }
+                        else{
+                            Toast.makeText(getBaseContext(),"Aucun élément",Toast.LENGTH_LONG).show();
+                        }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -313,11 +348,9 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<Organe>> call = service.getAllOrganes();
-            //List<Boisson> result = call.execute().body();
-            //final List<Boisson> result;
             call.enqueue(new Callback<List<Organe>>() {
                 @Override
                 public void onResponse(Call<List<Organe>> call, Response<List<Organe>> response) {
@@ -326,8 +359,13 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<Organe, Integer> organeDao;
                     try {
                         organeDao = getHelper().getOrganeDao();
-                        //This is the way to insert data into a database table
-                        organeDao.create(organes);
+                        if(!organes.isEmpty()){
+                            organeDao.create(organes);
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(),"Aucun organe",Toast.LENGTH_LONG).show();
+                        }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -359,7 +397,7 @@ public class GetDataActivity extends AppCompatActivity {
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
-            Retrofit retrofit = RetrofitBuilder.getRetrofit("http://192.168.1.107:8080" + "/");
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
             WebService service = retrofit.create(WebService.class);
             Call<List<SousOrgane>> call = service.getAllSousOrganes();
             call.enqueue(new Callback<List<SousOrgane>>() {
@@ -370,8 +408,13 @@ public class GetDataActivity extends AppCompatActivity {
                     final Dao<SousOrgane, Integer> sousorganeDao;
                     try {
                         sousorganeDao = getHelper().getSousOrganeDao();
-                        //This is the way to insert data into a database table
-                        sousorganeDao.create(sousorganes);
+                        if(!sousorganes.isEmpty()){
+                            sousorganeDao.create(sousorganes);
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(),"Aucun sous organe",Toast.LENGTH_LONG).show();
+                        }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -412,6 +455,8 @@ public class GetDataActivity extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.url_dialog, null);
         dialogBuilder.setView(dialogView);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        url = settings.getString("com.royken.url", "");
 
         final EditText edt = (EditText) dialogView.findViewById(R.id.input_url);
         if(url.length() > 0){
@@ -423,9 +468,14 @@ public class GetDataActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String txt = edt.getText().toString().trim();
-                editor.putString("com.royken.url",txt);
-                editor.commit();
-                Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG).show();
+                if (txt.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "URL Manquante", Toast.LENGTH_LONG).show();
+                } else {
+                    editor.putString("com.royken.url", txt);
+                    editor.commit();
+                    Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         dialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {

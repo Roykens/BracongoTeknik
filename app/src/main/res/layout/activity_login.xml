@@ -58,6 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
+        android:textSize="15dp"
+        android:background="@drawable/button_bg_rounded_corners"
         android:padding="12dp"
         android:textColor="#ffffff"
         android:textAlignment="center"

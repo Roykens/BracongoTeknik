@@ -7,6 +7,8 @@ import com.royken.teknik.entities.Bloc;
 import com.royken.teknik.entities.Donnees;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
+import com.royken.teknik.entities.PostAnswer;
+import com.royken.teknik.entities.Reponse;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
@@ -43,8 +45,11 @@ public interface WebService {
     @GET("/teknik/api/teknik/users")
     Call<List<Utilisateur>> getAllUtilisateurs();
 
-    @POST("/teknik/api/teknik/reponse")
+    @POST("/teknik/api/teknik/reponses")
     Call<Donnees> envoyerReponse(@Body Donnees donnees);
+
+    @POST("/teknik/api/teknik/reponse")
+    Call<PostAnswer> envoyerReponse(@Body List<Reponse> reponse);
 
 
 

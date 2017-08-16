@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by royken on 22/12/16.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "bloc")
 public class Bloc implements Serializable {
 
     private static final long serialVersionUID = -22286413121457024L;

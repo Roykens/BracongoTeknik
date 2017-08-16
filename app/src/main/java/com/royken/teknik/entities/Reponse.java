@@ -1,5 +1,7 @@
 package com.royken.teknik.entities;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -10,44 +12,65 @@ import java.util.Date;
 /**
  * Created by royken on 29/12/16.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "reponse")
 public class Reponse implements Serializable{
 
     private static final long serialVersionUID = -22286413121475724L;
 
+    @Expose(serialize = false, deserialize = false)
     @DatabaseField
     private int id;
 
     @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private String code;
 
     @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private String nom;
 
     @DatabaseField
+    @Expose
+    @SerializedName("valeur")
     private String valeur;
 
     @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private int compteur;
 
     @DatabaseField
+    @Expose
+    @SerializedName("idElement")
     private int idElement;
 
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd HH:mm:ss")
+    @Expose
+    @SerializedName("date")
     private Date date;
 
     @DatabaseField
     private String user;
 
     @DatabaseField
+    @Expose
+    @SerializedName("idUser")
+    private int idUser;
+
+    @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private String cahier;
 
     @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private String organe;
 
     @DatabaseField
+    @Expose(serialize = false, deserialize = false)
     private String sousOrgane;
 
+    @DatabaseField
+    @Expose
+    @SerializedName("valeurCorrecte")
     private boolean valeurCorrecte;
 
     public Reponse() {
@@ -147,6 +170,14 @@ public class Reponse implements Serializable{
 
     public void setSousOrgane(String sousOrgane) {
         this.sousOrgane = sousOrgane;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     @Override

@@ -184,6 +184,10 @@ fieldName=cahier
 # --field-start--
 fieldName=nom
 # --field-end--
+# --field-start--
+fieldName=idServeur
+columnName=idServeur
+# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -230,6 +234,9 @@ fieldName=sousOrgane
 # --field-end--
 # --field-start--
 fieldName=valeurCorrecte
+# --field-end--
+# --field-start--
+fieldName=idUser
 # --field-end--
 # --table-fields-end--
 # --table-end--
