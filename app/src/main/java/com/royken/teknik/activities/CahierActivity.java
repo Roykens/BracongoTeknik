@@ -265,18 +265,19 @@ public class CahierActivity extends AppCompatActivity {
                             if(isExporting  == false){
                                 isExporting = true;
                             try {
-                                long offset = settings.getLong("com.royken.offset", 0);
+                            //    long offset = settings.getLong("com.royken.offset", 0);
                                 reponseDao = getHelper().getReponseDao();
-                                long nombre = reponseDao.countOf();
-                                if (offset == 0) {
+                            //    long nombre = reponseDao.countOf();
+                            //    if (offset == 0) {
                                     reponses = reponseDao.queryForAll();
-                                } else {
+                             /*   } else {
                                     reponses = reponseDao.queryBuilder().offset(offset).limit(nombre - offset).query();
                                 }
 
                                 SharedPreferences.Editor editor = settings.edit();
                                 editor.putLong("com.royken.offset", nombre);
                                 editor.commit();
+                                */
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
