@@ -18,7 +18,7 @@
         android:id="@+id/menu_update"
         app:showAsAction="always"
         android:title="Paramètres"
-        android:icon="@android:drawable/ic_menu_edit"/>
+        android:icon="@android:drawable/ic_menu_rotate"/>
 
     <item
         android:id="@+id/menu_settings"

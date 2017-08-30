@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * Created by royken on 22/12/16.
  */
-@DatabaseTable
+@DatabaseTable(tableName = "zone")
 public class Zone implements Serializable {
 
     private static final long serialVersionUID = -222864131214757024L;

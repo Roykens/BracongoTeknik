@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
-import com.royken.teknik.activities.CahierActivity;
 import com.royken.teknik.R;
 import com.royken.teknik.database.DatabaseHelper;
 import com.royken.teknik.database.DatabaseOpenHelper;
@@ -57,7 +56,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
               boolean value =   login(lgnTxt.getText().toString(),passTxt.getText().toString());
                 if(value){
-                    Intent intent = new Intent(Login.this, CahierActivity.class);
+                    Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     Login.this.finish();
                 }
@@ -82,7 +81,7 @@ public class Login extends AppCompatActivity {
                editor.putInt("com.royken.userId", u.getId());
                editor.putBoolean("com.royken.haslogged", true);
                editor.commit();
-               Toast.makeText(getApplicationContext(),"Connecté : "+ u.getLogin(), Toast.LENGTH_LONG).show();
+               //Toast.makeText(getApplicationContext(),"Connecté : "+ u.getLogin(), Toast.LENGTH_LONG).show();
                return true;
            }
 

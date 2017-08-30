@@ -66,10 +66,11 @@ public class BlocActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  //   Toast.makeText(getApplicationContext(), blocs.get(position).getNom(), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(BlocActivity.this,
+                 /*   Intent intent = new Intent(BlocActivity.this,
                             OrganeActivity.class);
                     intent.putExtra(ARG_BLOCID,blocs.get(position).getIdServeur());
                     startActivity(intent);
+                    */
                 }
             });
         } catch (SQLException e) {

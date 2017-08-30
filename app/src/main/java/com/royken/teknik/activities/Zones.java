@@ -68,9 +68,10 @@ public class Zones extends AppCompatActivity {
                    // Intent intent = new Intent(Zones.this, BlocActivity.class);
                    // Intent intent = new Intent(Zones.this, ElementActivity.class);
                    // intent.putExtra(ARG_ZONEID, zones.get(position).getIdServeur());
-                    Intent intent = new Intent(Zones.this, OrganeActivity.class);
+                  /*  Intent intent = new Intent(Zones.this, OrganeActivity.class);
                      intent.putExtra(ARG_ZONEID, zones.get(position).getIdServeur());
                     startActivity(intent);
+                    */
                 }
             });
         } catch (SQLException e) {

@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.format.CellFormat;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -241,6 +242,96 @@ public class ExportData {
             return true;
         }
         return false;
+    }
+
+    public void exportReponseForImport(){
+        ProgressDialog Dialog = new ProgressDialog(context);
+        Calendar gc = new GregorianCalendar();
+        gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+        String date = gc.get(Calendar.DAY_OF_MONTH)+"_"+(gc.get(Calendar.MONTH)+1)+"_"+gc.get(Calendar.YEAR)+"_"+(gc.get(Calendar.HOUR_OF_DAY)+1)+"_"+gc.get(Calendar.MINUTE);
+        String Fnamexls ="donneesPourImport_"+date  + ".xls";
+        File sdCard = Environment.getExternalStorageDirectory();
+        File directory;
+        if(isExternalStorageWritable()){
+            //Toast.makeText(context,"La carte est dispo",Toast.LENGTH_LONG).show();
+            directory = getFolderStorageDir("/teknikExport");
+        }
+
+        else {
+            //sdCard =  Environment.getExternalStorageDirectory();
+            directory = new File (sdCard.getAbsolutePath() + "/teknikExport");
+            directory.mkdirs();
+         }
+
+        File file = new File(directory, Fnamexls);
+        WorkbookSettings wbSettings = new WorkbookSettings();
+        wbSettings.setLocale(new Locale("en", "EN"));
+        WritableWorkbook workbook;
+        //Dialog.setMessage("Exportation .....");
+        //Dialog.show();
+        try {
+            workbook = Workbook.createWorkbook(file, wbSettings);
+            int chunk = 0;
+            int taille = reponses.size();
+            int nombreIteration = (taille/60000) + 1;
+            for (int l = 0; l < nombreIteration; l++){
+                WritableSheet sheet = workbook.createSheet("Sheet : " + l, 0);
+                Label label1 = new Label(0, 0, "#");
+                Label label2 = new Label(1,0,"IdEl");
+                Label label3 = new Label(2,0,"Valeur");
+                Label label4 = new Label(3,0,"Correcte ?");
+                Label label5 = new Label(4,0,"Date");
+                Label label6 = new Label(5,0,"IdUser");
+
+                try {
+                    sheet.addCell(label1);
+                    sheet.addCell(label2);
+                    sheet.addCell(label3);
+                    sheet.addCell(label4);
+                    sheet.addCell(label5);
+                    sheet.addCell(label6);
+                } catch (RowsExceededException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
+                //reponses.
+
+                for (int i = l * 60000, k=1, p = 0; i < reponses.size() && (i < (l * 60000) + 60000); i++,k++,p++) {
+                    int j = 0;
+                    label1 = new Label(j++,k,p+1+"");
+                    label2 = new Label(j++,k,reponses.get(i).getIdElement()+"");
+                    label3 = new Label(j++,k,reponses.get(i).getValeur().replace('.', ','));
+                    label4 = new Label(j++,k,reponses.get(i).isValeurCorrecte()? "true":"false");
+                    label5 = new Label(j++,k,reponses.get(i).getDate().getTime()+"");
+                    label6 = new Label(j++, k, reponses.get(i).getIdUser()+"");
+                   // new Label(1,1,"", CellFormat.)
+
+
+                    try {
+                        sheet.addCell(label1);
+                        sheet.addCell(label2);
+                        sheet.addCell(label3);
+                        sheet.addCell(label4);
+                        sheet.addCell(label5);
+                        sheet.addCell(label6);
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            workbook.write();
+            //  Dialog.dismiss();
+            try {
+                workbook.close();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
