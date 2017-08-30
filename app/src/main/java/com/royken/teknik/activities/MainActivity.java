@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
         @Override
         protected void onPostExecute(Void unused) {
             Dialog.dismiss();
-            Toast.makeText(getApplicationContext(), "Envoi terminé", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Envoi terminé", Toast.LENGTH_LONG).show();
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("com.royken.index", false);
             editor.commit();
@@ -472,7 +472,6 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
                             Toast.makeText(getApplicationContext(),"Aucune zone récupérée",Toast.LENGTH_LONG).show();
                         }
 
-
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -489,7 +488,6 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
             Dialog.dismiss();
             new BlocTask().execute();
         }
-
     }
 
     private class BlocTask  extends AsyncTask<String, Void, Void> {

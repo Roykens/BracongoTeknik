@@ -135,9 +135,9 @@ public class ElementFragment extends Fragment {
             reponseDao = getHelper().getReponseDao();
             //long nombre = reponseDao.countOf();
             if (offset == 0) {
-                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getId()).query();
+                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getIdServeur()).query();
             } else {
-                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getId()).query();
+                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getIdServeur()).query();
             }
             Collections.reverse(reponses);
             reponseAdapter = new ReponseAdapter(getActivity(), reponses);
@@ -296,7 +296,7 @@ public class ElementFragment extends Fragment {
             organe = o.getNom();
             sousOrgane = so.getNom();
             Reponse r = reponseDao.queryBuilder()
-                    .orderBy("id", false).where().eq("idElement", e.getId()).queryForFirst();
+                    .orderBy("id", false).where().eq("idElement", e.getIdServeur()).queryForFirst();
 
 
             if (e.isHasBorn()) {
@@ -560,10 +560,10 @@ public class ElementFragment extends Fragment {
             //long nombre = reponseDao.countOf();
             if (offset == 0) {
                 //reponses = reponseDao.queryForAll();
-                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getId()).query();
+                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getIdServeur()).query();
             } else {
                 //reponses = reponseDao.queryBuilder().offset(offset).limit(nombre - offset).query();
-                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getId()).query();
+                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getIdServeur()).query();
             }
 
            // SharedPreferences.Editor editor = settings.edit();
