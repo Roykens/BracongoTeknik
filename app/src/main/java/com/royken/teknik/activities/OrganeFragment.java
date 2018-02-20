@@ -54,6 +54,7 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     private static final String ARG_ZONEID = "zoneId";
     private static final String ARG_HORAIRE = "horaireId";
     private static final String ARG_CAHIERID = "cahierId";
+    private static final String ARG_PARAM1 = "chemin";
     private DatabaseHelper databaseHelper = null;
     private OrganeAdapter organeAdapter;
     private OrganeItemAdapter organeItemAdapter;
@@ -62,13 +63,8 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     SharedPreferences settings ;
     Dao<Utilisateur, Integer> userDao;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String chemin;
     private String mParam2;
     int cahierId;
     int horaireId;
@@ -87,14 +83,15 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @return A new instance of fragment BlankFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrganeFragment newInstance(int param1) {
+    public static OrganeFragment newInstance(int cahier, int horaire,String chemin) {
         OrganeFragment fragment = new OrganeFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_CAHIERID, param1);
+        args.putInt(ARG_CAHIERID, cahier);
+        args.putInt(ARG_HORAIRE, horaire);
+        args.putString(ARG_PARAM1, chemin);
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,6 +105,8 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             cahierId = getArguments().getInt(ARG_CAHIERID);
+            horaireId = getArguments().getInt(ARG_HORAIRE);
+            chemin = getArguments().getString(ARG_PARAM1);
         }
 
     }
@@ -223,7 +222,8 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-       Fragment fragment = TimeChooseFragment.newInstance(organes.get(position).getIdServeur(),cheminS,organes.get(position).getId());
+       Fragment fragment = ElementListFragment.newInstance(((Organe)organeItemAdapter.getItem(position)).getIdServeur(),horaireId,chemin + ">" +((Organe)organeItemAdapter.getItem(position)).getNom());
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, fragment);
         ft.addToBackStack(null);
