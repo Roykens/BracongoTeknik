@@ -54,9 +54,8 @@ public class TimeChooseFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+    private static final String ARG_PARAM2 = "cahierNom";
+    String nomCahier;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -72,13 +71,15 @@ public class TimeChooseFragment extends Fragment {
      * @return A new instance of fragment BlankFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TimeChooseFragment newInstance(int param1,String param2, int param3) {
+    public static TimeChooseFragment newInstance(int param1, String cahier) {
         TimeChooseFragment fragment = new TimeChooseFragment();
         Bundle args = new Bundle();
         //args.putInt(ARG_CAHIERID,cahierId);
-        args.putInt(ARG_ORGANEID, param1);
-        args.putString(ARG_PARAM2, param2);
-        args.putInt(ARG_PARAM1, param3);
+       // args.putInt(ARG_ORGANEID, param1);
+        //args.putString(ARG_PARAM2, param2);
+        //args.putInt(ARG_PARAM1, param3);
+        args.putInt(ARG_CAHIERID, param1);
+        args.putString(ARG_PARAM2,cahier);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,15 +92,16 @@ public class TimeChooseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-                organeId = getArguments().getInt(ARG_ORGANEID);
-                mParam2 = getArguments().getString(ARG_PARAM2);
-            id = getArguments().getInt(ARG_PARAM1);
+                cahierId = getArguments().getInt(ARG_CAHIERID);
+                nomCahier = getArguments().getString(ARG_PARAM2);
+                //mParam2 = getArguments().getString(ARG_PARAM2);
+            //id = getArguments().getInt(ARG_PARAM1);
         }
     }
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
-        title.setText("Fréquences");
+        title.setText(nomCahier + ">Fréquences");
         user.setText(u.getNom());
     }
 
@@ -122,8 +124,8 @@ public class TimeChooseFragment extends Fragment {
             settings = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             int userId = settings.getInt("com.royken.userId", 0);
             u = userDao.queryForId(userId);
-            o = organeDao.queryForId(id);
-            chemin.setText("Accueil>"+mParam2+">"+o.getNom());
+            //o = organeDao.queryForId(id);
+            chemin.setText("Accueil>"+nomCahier);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,7 +138,8 @@ public class TimeChooseFragment extends Fragment {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Fragment fragment =  ElementListFragment.newInstance(organeId,2,mParam2+">"+o.getNom()+">Shift");
+                Fragment fragment = OrganeFragment.newInstance(cahierId,2,nomCahier+">Shift");
+            //Fragment fragment =  ElementListFragment.newInstance(organeId,2,mParam2+">"+o.getNom()+">Shift");
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, fragment);
                 ft.addToBackStack(null);
@@ -154,7 +157,8 @@ public class TimeChooseFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Fragment fragment =  ElementListFragment.newInstance(organeId,0,mParam2+">"+o.getNom()+">Horaire");
+                Fragment fragment = OrganeFragment.newInstance(cahierId,0,nomCahier+">Horaire");
+             // Fragment fragment =  ElementListFragment.newInstance(organeId,0,mParam2+">"+o.getNom()+">Horaire");
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, fragment);
                 ft.addToBackStack(null);
@@ -165,7 +169,8 @@ public class TimeChooseFragment extends Fragment {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-           Fragment fragment =  ElementListFragment.newInstance(organeId,3,mParam2+">"+o.getNom()+">Matin");
+                Fragment fragment = OrganeFragment.newInstance(cahierId,3,nomCahier+">Matin");
+           //Fragment fragment =  ElementListFragment.newInstance(organeId,3,mParam2+">"+o.getNom()+">Matin");
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, fragment);
                 ft.addToBackStack(null);

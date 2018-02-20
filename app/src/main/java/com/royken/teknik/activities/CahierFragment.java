@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 import com.royken.teknik.R;
 import com.royken.teknik.database.DatabaseHelper;
+import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.Reponse;
 import com.royken.teknik.entities.Utilisateur;
 
@@ -126,7 +127,8 @@ public class CahierFragment extends Fragment {
                    // Intent intent = new Intent(getActivity(), TimeChooseActivity.class);
                    // intent.putExtra(ARG_CAHIERID, 0);
                    // startActivity(intent);
-                    Fragment fragment = OrganeFragment.newInstance(0);
+                   // Fragment fragment = OrganeFragment.newInstance(0);
+                    Fragment fragment = TimeChooseFragment.newInstance(0,"EAU");
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.mainFrame,fragment);
                     ft.addToBackStack(null);
@@ -142,7 +144,7 @@ public class CahierFragment extends Fragment {
                   //  Intent intent = new Intent(getActivity(), TimeChooseActivity.class);
                   //  intent.putExtra(ARG_CAHIERID, 1);
                   //  startActivity(intent);
-                    Fragment fragment = OrganeFragment.newInstance(1);
+                    Fragment fragment = TimeChooseFragment.newInstance(1,"ELECTRICITE");
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                      ft.replace(R.id.mainFrame,fragment);
                     ft.addToBackStack(null);
@@ -159,7 +161,7 @@ public class CahierFragment extends Fragment {
                   //  intent.putExtra(ARG_CAHIERID, 3);
                   //  startActivity(intent);
 
-                    Fragment fragment = OrganeFragment.newInstance(3);
+                    Fragment fragment = TimeChooseFragment.newInstance(3,"MECANIQUE");
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                      ft.replace(R.id.mainFrame,fragment);
                     ft.addToBackStack(null);
@@ -176,7 +178,7 @@ public class CahierFragment extends Fragment {
                    // intent.putExtra(ARG_CAHIERID, 2);
                    // startActivity(intent);
 
-                    Fragment fragment = OrganeFragment.newInstance(2);
+                    Fragment fragment = TimeChooseFragment.newInstance(2,"GLACE");
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                      ft.replace(R.id.mainFrame,fragment);
                     ft.addToBackStack(null);

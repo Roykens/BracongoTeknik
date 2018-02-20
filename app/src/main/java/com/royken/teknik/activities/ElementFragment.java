@@ -37,8 +37,10 @@ import com.royken.teknik.entities.Zone;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -135,11 +137,11 @@ public class ElementFragment extends Fragment {
             reponseDao = getHelper().getReponseDao();
             //long nombre = reponseDao.countOf();
             if (offset == 0) {
-                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getIdServeur()).query();
+                reponses =  reponseDao.queryBuilder().orderBy("id", false).where().eq("idElement", e.getIdServeur()).query();
             } else {
-                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getIdServeur()).query();
+                reponses = reponseDao.queryBuilder().limit(24L).orderBy("id", false).where().eq("idElement", e.getIdServeur()).query();
             }
-            Collections.reverse(reponses);
+           // Collections.reverse(reponses);
             reponseAdapter = new ReponseAdapter(getActivity(), reponses);
 
             list.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
@@ -306,7 +308,9 @@ public class ElementFragment extends Fragment {
                     re.setCode(e.getCode());
 
                     re.setCompteur(1);
-                    re.setDate(new Date());
+                    GregorianCalendar gc = new GregorianCalendar();
+                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                    re.setDate(gc.getTime());
                     re.setUser(u.getNom());
                     re.setIdElement(e.getIdServeur());
                     re.setValeurCorrecte(false);
@@ -334,7 +338,9 @@ public class ElementFragment extends Fragment {
                             re.setNom(e.getNom());
                             re.setCode(e.getCode());
                             re.setCompteur(r.getCompteur() + 1);
-                            re.setDate(new Date());
+                            GregorianCalendar gc = new GregorianCalendar();
+                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                            re.setDate(gc.getTime());
                             re.setUser(u.getNom());
                             re.setIdElement(e.getIdServeur());
                             re.setValeurCorrecte(false);
@@ -359,7 +365,9 @@ public class ElementFragment extends Fragment {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdUser(u.getIdServeur());
                                     re.setIdElement(e.getIdServeur());
@@ -380,7 +388,9 @@ public class ElementFragment extends Fragment {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                                     re.setCahier(cahier);
@@ -404,7 +414,9 @@ public class ElementFragment extends Fragment {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdUser(u.getIdServeur());
                                     re.setIdElement(e.getIdServeur());
@@ -425,7 +437,9 @@ public class ElementFragment extends Fragment {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdElement(e.getIdServeur());
                                     re.setIdUser(u.getIdServeur());
@@ -453,7 +467,9 @@ public class ElementFragment extends Fragment {
                                 re.setNom(e.getNom());
                                 re.setCode(e.getCode());
                                 re.setCompteur(1);
-                                re.setDate(new Date());
+                                GregorianCalendar gc = new GregorianCalendar();
+                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                re.setDate(gc.getTime());
                                 re.setUser(u.getNom());
                                 re.setIdElement(e.getIdServeur());
                                 re.setIdUser(u.getIdServeur());
@@ -474,7 +490,9 @@ public class ElementFragment extends Fragment {
                                 re.setNom(e.getNom());
                                 re.setCode(e.getCode());
                                 re.setCompteur(1);
-                                re.setDate(new Date());
+                                GregorianCalendar gc = new GregorianCalendar();
+                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                re.setDate(gc.getTime());
                                 re.setIdUser(u.getIdServeur());
                                 re.setUser(u.getNom());
                                 re.setValeurCorrecte(true);
@@ -495,7 +513,9 @@ public class ElementFragment extends Fragment {
                             re.setNom(e.getNom());
                             re.setCode(e.getCode());
                             re.setCompteur(1);
-                            re.setDate(new Date());
+                            GregorianCalendar gc = new GregorianCalendar();
+                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                            re.setDate(gc.getTime());
                             re.setUser(u.getNom());
                             re.setValeurCorrecte(true);
                             re.setIdElement(e.getIdServeur());
@@ -517,7 +537,9 @@ public class ElementFragment extends Fragment {
                 re.setNom(e.getNom());
                 re.setCode(e.getCode());
                 re.setCompteur(1);
-                re.setDate(new Date());
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                re.setDate(gc.getTime());
                 re.setUser(u.getNom());
                 re.setValeurCorrecte(true);
                 //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
@@ -560,16 +582,16 @@ public class ElementFragment extends Fragment {
             //long nombre = reponseDao.countOf();
             if (offset == 0) {
                 //reponses = reponseDao.queryForAll();
-                reponses =  reponseDao.queryBuilder().where().eq("idElement", e.getIdServeur()).query();
+                reponses =  reponseDao.queryBuilder().orderBy("id", false).where().eq("idElement", e.getIdServeur()).query();
             } else {
                 //reponses = reponseDao.queryBuilder().offset(offset).limit(nombre - offset).query();
-                reponses = reponseDao.queryBuilder().limit(24L).where().eq("idElement", e.getIdServeur()).query();
+                reponses = reponseDao.queryBuilder().limit(24L).orderBy("id", false).where().eq("idElement", e.getIdServeur()).query();
             }
 
            // SharedPreferences.Editor editor = settings.edit();
            // editor.putLong("com.royken.offset", nombre);
            // editor.commit();
-            Collections.reverse(reponses);
+           // Collections.reverse(reponses);
             reponseAdapter = new ReponseAdapter(getActivity(), reponses);
 
             list.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
