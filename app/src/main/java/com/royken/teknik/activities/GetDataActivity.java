@@ -21,8 +21,10 @@ import com.j256.ormlite.dao.Dao;
 import com.royken.teknik.R;
 import com.royken.teknik.database.DatabaseHelper;
 import com.royken.teknik.entities.Bloc;
+import com.royken.teknik.entities.Cahier;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
+import com.royken.teknik.entities.Periode;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
@@ -52,6 +54,8 @@ public class GetDataActivity extends AppCompatActivity {
     private List<Organe> organes;
     private List<SousOrgane> sousorganes;
     private List<Zone> zones;
+    private List<Cahier> cahiers;
+    private List<Periode> periodes;
     TextView _urlLink;
     private String url;
 
@@ -90,7 +94,7 @@ public class GetDataActivity extends AppCompatActivity {
                     if (!androidNetworkUtility.isConnected(getApplicationContext())) {
                         Toast.makeText(getApplicationContext(), "Aucune connexion au serveur. Veuillez reéssayer plus tard", Toast.LENGTH_LONG).show();
                     } else {
-                        new UtilisateurTask().execute();
+                        new CahierTask().execute();
                     }
 
 
@@ -121,6 +125,63 @@ public class GetDataActivity extends AppCompatActivity {
             });
             */
         }
+    }
+
+    private class CahierTask extends AsyncTask<String, Void, Void> {
+        // Required initialization
+
+        private final HttpClient Client = new DefaultHttpClient();
+        private ProgressDialog Dialog = new ProgressDialog(GetDataActivity.this);
+        private boolean data;
+
+
+        protected void onPreExecute() {
+            Dialog.setMessage("Récupération des cahiers...");
+            Dialog.show();
+        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
+            WebService service = retrofit.create(WebService.class);
+            Call<List<Cahier>> call = service.getAllCahiers();
+            call.enqueue(new Callback<List<Cahier>>() {
+                @Override
+                public void onResponse(Call<List<Cahier>> call, Response<List<Cahier>> response) {
+                    //  Log.i("Result....", response.toString());
+                    cahiers = response.body();
+                    final Dao<Cahier, Integer> cahierDao;
+                    try {
+                        cahierDao = getHelper().getCahierDao();
+                        if(!cahiers.isEmpty()){
+                            data  = true;
+                            cahierDao.create(cahiers);
+                        }
+                        else {
+                            data = false;
+                            Toast.makeText(getApplicationContext(),"Aucun cahier trouvé, Vérifiez la connexion !!!",Toast.LENGTH_LONG).show();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<Cahier>> call, Throwable t) {
+                    Log.i("Error...", t.toString());
+                }
+            });
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            Dialog.dismiss();
+            Log.i("DATAAAAAAAAAAA",data+"");
+            // if(data){
+            new UtilisateurTask().execute();
+            // }
+
+        }
+
     }
 
     private class UtilisateurTask extends AsyncTask<String, Void, Void> {
@@ -229,7 +290,6 @@ public class GetDataActivity extends AppCompatActivity {
             Dialog.dismiss();
             new BlocTask().execute();
         }
-
     }
 
     private class BlocTask  extends AsyncTask<String, Void, Void> {
@@ -372,6 +432,54 @@ public class GetDataActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<List<Organe>> call, Throwable t) {
+                    Log.i("Error...", t.toString());
+                }
+            });
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            Dialog.dismiss();
+            new PeriodeTask().execute();
+        }
+
+    }
+
+    private class PeriodeTask  extends AsyncTask<String, Void, Void> {
+        // Required initialization
+
+        private ProgressDialog Dialog = new ProgressDialog(GetDataActivity.this);
+
+        protected void onPreExecute() {
+            Dialog.setMessage("Récupération des Periodes...");
+            Dialog.show();
+        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
+            WebService service = retrofit.create(WebService.class);
+            Call<List<Periode>> call = service.getAllPeriodes();
+            call.enqueue(new Callback<List<Periode>>() {
+                @Override
+                public void onResponse(Call<List<Periode>> call, Response<List<Periode>> response) {
+                    periodes = response.body();
+                    final Dao<Periode, Integer> periodeDao;
+                    try {
+                        periodeDao = getHelper().getPeriodeDao();
+                        if(!periodes.isEmpty()){
+                            periodeDao.create(periodes);
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(),"Aucune périodes",Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<Periode>> call, Throwable t) {
                     Log.i("Error...", t.toString());
                 }
             });

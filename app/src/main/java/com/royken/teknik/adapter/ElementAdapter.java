@@ -218,7 +218,7 @@ public class ElementAdapter extends BaseAdapter {
                                 else {
 
                                     if (e.isCriteriaAlpha()) {
-                                        if (Double.parseDouble(r.getValeur()) > valeur || (Double.parseDouble(r.getValeur()) + e.getValMax()) < valeur) {
+                                        if (Double.parseDouble(r.getValeur()) > valeur ) {
                                             Reponse re = new Reponse();
                                             re.setNom(e.getNom());
                                             re.setCode(e.getCode());

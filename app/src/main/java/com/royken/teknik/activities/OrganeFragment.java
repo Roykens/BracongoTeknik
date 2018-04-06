@@ -66,7 +66,7 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     // TODO: Rename and change types of parameters
     private String chemin;
     private String mParam2;
-    int cahierId;
+    String cahierId; // J'utilise le code du cahier comme ID
     int horaireId;
 
     private OnFragmentInteractionListener mListener;
@@ -86,10 +86,10 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
      * @return A new instance of fragment BlankFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrganeFragment newInstance(int cahier, int horaire,String chemin) {
+    public static OrganeFragment newInstance(String cahier, int horaire,String chemin) {
         OrganeFragment fragment = new OrganeFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_CAHIERID, cahier);
+        args.putString(ARG_CAHIERID, cahier);
         args.putInt(ARG_HORAIRE, horaire);
         args.putString(ARG_PARAM1, chemin);
         fragment.setArguments(args);
@@ -104,11 +104,10 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            cahierId = getArguments().getInt(ARG_CAHIERID);
+            cahierId = getArguments().getString(ARG_CAHIERID);
             horaireId = getArguments().getInt(ARG_HORAIRE);
             chemin = getArguments().getString(ARG_PARAM1);
         }
-
     }
 
 
@@ -149,12 +148,12 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
             int userId = settings.getInt("com.royken.userId", 0);
             u = userDao.queryForId(userId);
 
-            if(cahierId == 0){
-                zones = zoneDao.queryBuilder().where().like("cahierCode", "OTE").query();
+
+                zones = zoneDao.queryBuilder().where().like("cahierCode", cahierId).query();
                 chemin.setText("Accueil>Traitement Eau");
                 cheminS = "Traitement Eau";
-            }
-            if(cahierId == 1) {
+
+            /*if(cahierId == 1) {
                 zones = zoneDao.queryBuilder().where().like("cahierCode", "GPE").or().like("cahierCode", "ELE").or().like("cahierCode", "CHA").or().like("cahierCode", "COM").query();
                 chemin.setText("Accueil>Electricité");
                 cheminS = "Electricité";
@@ -169,6 +168,7 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
                 chemin.setText("Accueil>Mécanique");
                 cheminS = "Mécanique";
             }
+            */
             blocDao = getHelper().getBlocDao();
             List<Bloc> blocss = new ArrayList<>();
             for (Zone z : zones) {

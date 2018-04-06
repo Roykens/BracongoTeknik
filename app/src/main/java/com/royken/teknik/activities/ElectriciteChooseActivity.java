@@ -37,7 +37,7 @@ public class ElectriciteChooseActivity extends AppCompatActivity {
             cahierId = intent.getIntExtra(ARG_CAHIERID,0);
         }
 
-        b1 = (Button)findViewById(R.id.button2);
+      /*  b1 = (Button)findViewById(R.id.button2);
         b2 = (Button)findViewById(R.id.button3);
         b3 = (Button)findViewById(R.id.button4);
         b4 = (Button)findViewById(R.id.button5);
@@ -54,6 +54,7 @@ public class ElectriciteChooseActivity extends AppCompatActivity {
                 Toast.makeText(getApplication(),"Aucune donnée",Toast.LENGTH_LONG).show();
             }
         });
+        */
 
       /*  b1.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,8 +10,10 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.royken.teknik.R;
 import com.royken.teknik.entities.Bloc;
+import com.royken.teknik.entities.Cahier;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
+import com.royken.teknik.entities.Periode;
 import com.royken.teknik.entities.Reponse;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
@@ -34,6 +36,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<SousOrgane, Integer> sousOrganeDao;
     private Dao<Utilisateur, Integer> utilisateurDao;
     private Dao<Zone, Integer> zoneDao;
+    private Dao<Cahier, Integer> cahierDao;
+    private Dao<Periode, Integer> periodeDao;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -51,6 +55,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, SousOrgane.class);
             TableUtils.createTable(connectionSource, Utilisateur.class);
             TableUtils.createTable(connectionSource, Zone.class);
+            TableUtils.createTable(connectionSource, Cahier.class);
+            TableUtils.createTable(connectionSource, Periode.class);
 
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Unable to create datbases", e);
@@ -72,6 +78,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, SousOrgane.class, true);
             TableUtils.dropTable(connectionSource, Utilisateur.class, true);
             TableUtils.dropTable(connectionSource, Zone.class, true);
+            TableUtils.dropTable(connectionSource, Cahier.class, true);
+            TableUtils.dropTable(connectionSource, Periode.class, true);
             onCreate(sqliteDatabase, connectionSource);
 
         } catch (SQLException e) {
@@ -130,5 +138,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             zoneDao = getDao(Zone.class);
         }
         return zoneDao;
+    }
+
+    public Dao<Cahier, Integer> getCahierDao() throws SQLException {
+        if (cahierDao == null) {
+            cahierDao = getDao(Cahier.class);
+        }
+        return cahierDao;
+    }
+
+    public Dao<Periode, Integer> getPeriodeDao() throws SQLException {
+        if (periodeDao == null) {
+            periodeDao = getDao(Periode.class);
+        }
+        return periodeDao;
     }
 }

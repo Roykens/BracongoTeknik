@@ -6,7 +6,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/timeLayout">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,51 +17,5 @@
         android:textColor="#ffffff"
         android:layout_gravity="left" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:text="HORAIRE"
-        android:layout_marginTop="10dp"
-        android:id="@+id/button2"
-        android:layout_gravity="center_vertical" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
-        android:text="6H MATIN"
-        android:id="@+id/button3"
-        android:layout_gravity="center_vertical" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
-        android:text="SHIFT"
-        android:id="@+id/button4"
-        android:layout_gravity="center_vertical" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
-        android:text="TOUT LES 2H"
-        android:id="@+id/button5"
-        android:layout_gravity="center_vertical" />
 </LinearLayout>
 </FrameLayout>

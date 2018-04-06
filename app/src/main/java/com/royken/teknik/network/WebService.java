@@ -4,11 +4,14 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.royken.teknik.entities.Bloc;
+import com.royken.teknik.entities.Cahier;
 import com.royken.teknik.entities.Donnees;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
+import com.royken.teknik.entities.Periode;
 import com.royken.teknik.entities.PostAnswer;
 import com.royken.teknik.entities.Reponse;
+import com.royken.teknik.entities.ServerStatus;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
@@ -27,28 +30,37 @@ import retrofit2.http.POST;
  */
 public interface WebService {
 
-    @GET("/teknik/api/teknik/blocs")
+    @GET("/BracongoTeknik/api/teknik/blocs")
     Call<List<Bloc>> getAllBlocs();
 
-    @GET("/teknik/api/teknik/zones")
+    @GET("/BracongoTeknik/api/teknik/zones")
     Call<List<Zone>> getAllZones();
 
-    @GET("/teknik/api/teknik/organes")
+    @GET("/BracongoTeknik/api/teknik/organes")
     Call<List<Organe>> getAllOrganes();
 
-    @GET("/teknik/api/teknik/sousOrganes")
+    @GET("/BracongoTeknik/api/teknik/sousOrganes")
     Call<List<SousOrgane>> getAllSousOrganes();
 
-    @GET("/teknik/api/teknik/elements")
+    @GET("/BracongoTeknik/api/teknik/elements")
     Call<List<Element>> getAllElements();
 
-    @GET("/teknik/api/teknik/users")
+    @GET("/BracongoTeknik/api/teknik/cahiers")
+    Call<List<Cahier>> getAllCahiers();
+
+    @GET("/BracongoTeknik/api/teknik/users")
     Call<List<Utilisateur>> getAllUtilisateurs();
 
-    @POST("/teknik/api/teknik/reponses")
+    @GET("/BracongoTeknik/api/teknik/periodes")
+    Call<List<Periode>> getAllPeriodes();
+
+    @GET("/BracongoTeknik/api/teknik/status")
+    Call<ServerStatus> getServerStatus();
+
+    @POST("/BracongoTeknik/api/teknik/reponses")
     Call<Donnees> envoyerReponse(@Body Donnees donnees);
 
-    @POST("/teknik/api/teknik/reponse")
+    @POST("/BracongoTeknik/api/teknik/reponse")
     Call<PostAnswer> envoyerReponse(@Body List<Reponse> reponse);
 
 

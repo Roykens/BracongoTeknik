@@ -1,4 +1,50 @@
 #-start--
+dataClass=com.royken.teknik.entities.Periode
+tableName=periode
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=nom
+columnName=nom
+# --field-end--
+# --field-start--
+fieldName=idServeur
+columnName=idServeur
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#########################################
+
+##########################################
+dataClass=com.royken.teknik.entities.Cahier
+tableName=cahier
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=code
+columnName=code
+# --field-end--
+# --field-start--
+fieldName=nom
+columnName=nom
+# --field-end--
+# --field-start--
+fieldName=idServeur
+columnName=idServeur
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#########################################
+
+##########################################
 dataClass=com.royken.teknik.entities.Zone
 tableName=zones
 # --table-fields-start--

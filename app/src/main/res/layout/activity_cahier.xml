@@ -7,6 +7,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:id="@+id/cahierLayout"
     android:orientation="vertical">
 
     <TextView
@@ -16,54 +17,6 @@
         android:textColor="#ffffff"
         android:id="@+id/chemin"
         android:layout_gravity="left" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:text="RELEVE TRAITEMENT EAU"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="10dp"
-        android:id="@+id/button2"
-        android:layout_gravity="center_vertical" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:layout_marginTop="15dp"
-        android:textColor="#ffffff"
-        android:text="Electricité"
-        android:id="@+id/button3"
-        android:layout_gravity="center_vertical" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
-        android:text="Usine à glace"
-        android:id="@+id/button4"
-        android:layout_gravity="center_vertical" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/button_bg_rounded_corners"
-        android:padding="12dp"
-        android:textColor="#ffffff"
-        android:layout_marginTop="15dp"
-        android:text="Mécanique"
-        android:id="@+id/button5"
-        android:layout_gravity="center_vertical" />
-
 
 
 
