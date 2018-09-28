@@ -168,8 +168,6 @@ public class ElementFragment extends Fragment {
             u = userDao.queryForId(userId);
             elementDao =  getHelper().getElementDao();
             e = elementDao.queryForId(elementId);
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -193,8 +191,6 @@ public class ElementFragment extends Fragment {
         title = (TextView) bar.findViewById(R.id.title);
         CoordinatorLayout coor = (CoordinatorLayout)getActivity().findViewById(R.id.coord);
         coor.setBackgroundColor(Color.parseColor("#f3f3f3f3"));
-
-
         uniteTvw.setText("( "+e.getUnite()+" )");
         LinearLayout borne = (LinearLayout) view.findViewById(R.id.bornes);
         if(e.isHasBorn()){
@@ -205,7 +201,7 @@ public class ElementFragment extends Fragment {
                 maxTvw.setText("N - 1 + " + e.getValMax());
             }
             else {
-              //  maxTvw.setText(e.getValMax());
+               // maxTvw.setText(e.getValMax());
                // minTvw.setText(e.getValMin());
 
             }
@@ -214,7 +210,7 @@ public class ElementFragment extends Fragment {
             borne.setVisibility(View.INVISIBLE);
         }
         if(e.getValeurType().equalsIgnoreCase("int") || e.getValeurType().equalsIgnoreCase("double")){
-            valeurTxt.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            valeurTxt.setRawInputType(InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         }
 
         enreg.setOnClickListener(new View.OnClickListener() {
@@ -246,10 +242,6 @@ public class ElementFragment extends Fragment {
 
         }
     }
-
-
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -291,7 +283,6 @@ public class ElementFragment extends Fragment {
     }
 
     private void enregistrerValeur(){
-
         try {
             reponseDao = getHelper().getReponseDao();
             cahier = CahierDummy.getCahierByCode(z.getCahierCode());
@@ -306,10 +297,10 @@ public class ElementFragment extends Fragment {
                     Reponse re = new Reponse();
                     re.setNom(e.getNom());
                     re.setCode(e.getCode());
-
                     re.setCompteur(1);
                     GregorianCalendar gc = new GregorianCalendar();
-                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                    //gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                     re.setDate(gc.getTime());
                     re.setUser(u.getNom());
                     re.setIdElement(e.getIdServeur());
@@ -339,7 +330,7 @@ public class ElementFragment extends Fragment {
                             re.setCode(e.getCode());
                             re.setCompteur(r.getCompteur() + 1);
                             GregorianCalendar gc = new GregorianCalendar();
-                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                             re.setDate(gc.getTime());
                             re.setUser(u.getNom());
                             re.setIdElement(e.getIdServeur());
@@ -366,7 +357,7 @@ public class ElementFragment extends Fragment {
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
                                     GregorianCalendar gc = new GregorianCalendar();
-                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                     re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdUser(u.getIdServeur());
@@ -389,7 +380,7 @@ public class ElementFragment extends Fragment {
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
                                     GregorianCalendar gc = new GregorianCalendar();
-                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                     re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
@@ -415,7 +406,7 @@ public class ElementFragment extends Fragment {
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
                                     GregorianCalendar gc = new GregorianCalendar();
-                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                     re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdUser(u.getIdServeur());
@@ -438,7 +429,7 @@ public class ElementFragment extends Fragment {
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
                                     GregorianCalendar gc = new GregorianCalendar();
-                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                     re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdElement(e.getIdServeur());
@@ -468,7 +459,7 @@ public class ElementFragment extends Fragment {
                                 re.setCode(e.getCode());
                                 re.setCompteur(1);
                                 GregorianCalendar gc = new GregorianCalendar();
-                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                 re.setDate(gc.getTime());
                                 re.setUser(u.getNom());
                                 re.setIdElement(e.getIdServeur());
@@ -491,7 +482,7 @@ public class ElementFragment extends Fragment {
                                 re.setCode(e.getCode());
                                 re.setCompteur(1);
                                 GregorianCalendar gc = new GregorianCalendar();
-                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                                 re.setDate(gc.getTime());
                                 re.setIdUser(u.getIdServeur());
                                 re.setUser(u.getNom());
@@ -514,7 +505,7 @@ public class ElementFragment extends Fragment {
                             re.setCode(e.getCode());
                             re.setCompteur(1);
                             GregorianCalendar gc = new GregorianCalendar();
-                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                             re.setDate(gc.getTime());
                             re.setUser(u.getNom());
                             re.setValeurCorrecte(true);
@@ -538,7 +529,7 @@ public class ElementFragment extends Fragment {
                 re.setCode(e.getCode());
                 re.setCompteur(1);
                 GregorianCalendar gc = new GregorianCalendar();
-                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
+                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
                 re.setDate(gc.getTime());
                 re.setUser(u.getNom());
                 re.setValeurCorrecte(true);

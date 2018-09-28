@@ -6,6 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by royken on 22/12/16.
@@ -79,5 +80,23 @@ public class SousOrgane implements Serializable {
 
     public void setIdServeur(int idServeur) {
         this.idServeur = idServeur;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SousOrgane)) return false;
+        SousOrgane that = (SousOrgane) o;
+        return getId() == that.getId() &&
+                getIdServeur() == that.getIdServeur() &&
+                getIdOrgane() == that.getIdOrgane() &&
+                Objects.equals(getNom(), that.getNom()) &&
+                Objects.equals(getCode(), that.getCode());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getIdServeur(), getIdOrgane(), getNom(), getCode());
     }
 }

@@ -234,6 +234,10 @@ fieldName=nom
 fieldName=idServeur
 columnName=idServeur
 # --field-end--
+# --field-start--
+fieldName=salt
+columnName=salt
+# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################

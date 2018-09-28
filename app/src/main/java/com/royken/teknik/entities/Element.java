@@ -46,12 +46,12 @@ public class Element implements Serializable {
     @Expose(serialize = true, deserialize = true)
     @SerializedName("valMin")
     @DatabaseField
-    private int valMin;
+    private Double valMin;
 
     @Expose(serialize = true, deserialize = true)
     @SerializedName("valMax")
     @DatabaseField
-    private int valMax;
+    private Double valMax;
 
     @Expose(serialize = true, deserialize = true)
     @SerializedName("guideSaisie")
@@ -119,19 +119,19 @@ public class Element implements Serializable {
         this.criteriaAlpha = criteriaAlpha;
     }
 
-    public int getValMin() {
+    public Double getValMin() {
         return valMin;
     }
 
-    public void setValMin(int valMin) {
+    public void setValMin(Double valMin) {
         this.valMin = valMin;
     }
 
-    public int getValMax() {
+    public Double getValMax() {
         return valMax;
     }
 
-    public void setValMax(int valMax) {
+    public void setValMax(Double valMax) {
         this.valMax = valMax;
     }
 

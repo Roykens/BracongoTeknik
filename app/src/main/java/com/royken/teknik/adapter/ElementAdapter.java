@@ -141,6 +141,7 @@ public class ElementAdapter extends BaseAdapter {
         holder.photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // Toast.makeText(mContext,"PHOTO",Toast.LENGTH_LONG).show();
                 takePhoto(elements.get(position).getNom());
             }
         });
@@ -148,7 +149,6 @@ public class ElementAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (holder.txt_Valeur.getText().length() > 0) {
-
                     try {
                         so = sousODao.queryBuilder().where().eq("idServeur", elements.get(position).getSousOrganeId()).queryForFirst();
                         o = organeDao.queryBuilder().where().eq("idServeur", so.getIdOrgane()).queryForFirst();
@@ -174,7 +174,9 @@ public class ElementAdapter extends BaseAdapter {
                                 re.setCode(e.getCode());
 
                                 re.setCompteur(1);
-                                re.setDate(new Date());
+                                GregorianCalendar gc = new GregorianCalendar();
+                                gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                re.setDate(gc.getTime());
                                 re.setUser(u.getNom());
                                 re.setIdElement(e.getId());
                                 re.setValeurCorrecte(false);
@@ -200,7 +202,9 @@ public class ElementAdapter extends BaseAdapter {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(r.getCompteur() + 1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setIdElement(e.getId());
                                     re.setValeurCorrecte(false);
@@ -223,7 +227,9 @@ public class ElementAdapter extends BaseAdapter {
                                             re.setNom(e.getNom());
                                             re.setCode(e.getCode());
                                             re.setCompteur(r.getCompteur() + 1);
-                                            re.setDate(new Date());
+                                            GregorianCalendar gc = new GregorianCalendar();
+                                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                            re.setDate(gc.getTime());
                                             re.setUser(u.getNom());
                                             re.setIdElement(e.getId());
                                             re.setValeurCorrecte(false);
@@ -242,7 +248,9 @@ public class ElementAdapter extends BaseAdapter {
                                             re.setNom(e.getNom());
                                             re.setCode(e.getCode());
                                             re.setCompteur(r.getCompteur() + 1);
-                                            re.setDate(new Date());
+                                            GregorianCalendar gc = new GregorianCalendar();
+                                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                            re.setDate(gc.getTime());
                                             re.setUser(u.getNom());
                                             //  Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
                                             re.setCahier(cahier);
@@ -264,7 +272,9 @@ public class ElementAdapter extends BaseAdapter {
                                             re.setNom(e.getNom());
                                             re.setCode(e.getCode());
                                             re.setCompteur(r.getCompteur() + 1);
-                                            re.setDate(new Date());
+                                            GregorianCalendar gc = new GregorianCalendar();
+                                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                            re.setDate(gc.getTime());
                                             re.setUser(u.getNom());
                                             re.setIdElement(e.getId());
                                             re.setValeurCorrecte(false);
@@ -283,7 +293,9 @@ public class ElementAdapter extends BaseAdapter {
                                             re.setNom(e.getNom());
                                             re.setCode(e.getCode());
                                             re.setCompteur(r.getCompteur() + 1);
-                                            re.setDate(new Date());
+                                            GregorianCalendar gc = new GregorianCalendar();
+                                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                            re.setDate(gc.getTime());
                                             re.setUser(u.getNom());
                                             re.setIdElement(e.getId());
                                             re.setValeurCorrecte(true);
@@ -309,7 +321,9 @@ public class ElementAdapter extends BaseAdapter {
                                         re.setNom(e.getNom());
                                         re.setCode(e.getCode());
                                         re.setCompteur(1);
-                                        re.setDate(new Date());
+                                        GregorianCalendar gc = new GregorianCalendar();
+                                        gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                        re.setDate(gc.getTime());
                                         re.setUser(u.getNom());
                                         re.setIdElement(e.getId());
                                         re.setValeurCorrecte(false);
@@ -328,7 +342,9 @@ public class ElementAdapter extends BaseAdapter {
                                         re.setNom(e.getNom());
                                         re.setCode(e.getCode());
                                         re.setCompteur(1);
-                                        re.setDate(new Date());
+                                        GregorianCalendar gc = new GregorianCalendar();
+                                        gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                        re.setDate(gc.getTime());
                                         re.setUser(u.getNom());
                                         re.setValeurCorrecte(true);
                                         //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
@@ -352,7 +368,9 @@ public class ElementAdapter extends BaseAdapter {
                                     re.setNom(e.getNom());
                                     re.setCode(e.getCode());
                                     re.setCompteur(1);
-                                    re.setDate(new Date());
+                                    GregorianCalendar gc = new GregorianCalendar();
+                                    gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                                    re.setDate(gc.getTime());
                                     re.setUser(u.getNom());
                                     re.setValeurCorrecte(true);
                                     re.setIdElement(e.getId());
@@ -377,7 +395,9 @@ public class ElementAdapter extends BaseAdapter {
                             re.setNom(e.getNom());
                             re.setCode(e.getCode());
                             re.setCompteur(1);
-                            re.setDate(new Date());
+                            GregorianCalendar gc = new GregorianCalendar();
+                            gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) + 1);
+                            re.setDate(gc.getTime());
                             re.setUser(u.getNom());
                             re.setValeurCorrecte(true);
                             //Log.i("CAHIEEEEEEERRRRRRRRR", cahier);
@@ -435,7 +455,6 @@ public class ElementAdapter extends BaseAdapter {
 
 
     public class ViewHolder {
-
         TextView tv_Nom;
         EditText txt_Valeur;
         TextView tv_Guide;
@@ -459,6 +478,7 @@ public class ElementAdapter extends BaseAdapter {
     }
 
     public void takePhoto(String nom) {
+        Log.i("PHOTO ===========", "PHOTO");
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Calendar gc = new GregorianCalendar();
         gc.set(Calendar.HOUR_OF_DAY,gc.get(Calendar.HOUR_OF_DAY)-1);

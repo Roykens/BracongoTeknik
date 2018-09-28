@@ -176,6 +176,7 @@ public class ReponseAdapter extends BaseAdapter {
                     // holder.tv_Guide.setText("Enregistré");
                     Toast.makeText(mContext, "Enregistré : Valeur incorrecte", Toast.LENGTH_SHORT).show();
                    // updateUI();
+                    this.notifyDataSetChanged();
                 }
 
                 else {
@@ -193,6 +194,7 @@ public class ReponseAdapter extends BaseAdapter {
                             reponseDao.update(r);
                             Toast.makeText(mContext,"Enregistré : : Valeur incorrecte",Toast.LENGTH_SHORT).show();
                             //updateUI();
+                            this.notifyDataSetChanged();
                         }
                         ///////////////////////////////////////
                         else {
@@ -217,6 +219,7 @@ public class ReponseAdapter extends BaseAdapter {
                                     reponseDao.update(r);
                                     Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
                                     //updateUI();
+                                    this.notifyDataSetChanged();
                                 }
                             } else {
 
@@ -230,6 +233,7 @@ public class ReponseAdapter extends BaseAdapter {
                                     reponseDao.update(r);
                                    Toast.makeText(mContext,"Enregistré : Valeur incorrecte",Toast.LENGTH_SHORT).show();
                                    // updateUI();
+                                    this.notifyDataSetChanged();
                                 } else {
                                     GregorianCalendar gc = new GregorianCalendar();
                                     gc.set(Calendar.HOUR_OF_DAY, gc.get(Calendar.HOUR_OF_DAY) - 1);
@@ -240,6 +244,7 @@ public class ReponseAdapter extends BaseAdapter {
                                     reponseDao.update(r);
                                     Toast.makeText(mContext,"Enregistré",Toast.LENGTH_SHORT).show();
                                     //updateUI();
+                                    this.notifyDataSetChanged();
                                 }
                             }
 

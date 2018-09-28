@@ -29,6 +29,7 @@ import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.Periode;
 import com.royken.teknik.entities.PostAnswer;
 import com.royken.teknik.entities.Reponse;
+import com.royken.teknik.entities.ServerStatus;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
     private List<Periode> periodes;
     ExportData data;
     Dao<Utilisateur, Integer> userDao;
+    private ServerStatus status;
+    private boolean serverAvailability ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
                     if (!androidNetworkUtility.isConnected(getApplicationContext())) {
                         Toast.makeText(getApplicationContext(), "Aucune connexion au serveur. Veuillez reéssayer plus tard", Toast.LENGTH_LONG).show();
                     } else {
-                        new CahierTask().execute();
+                        new UpdateTask().execute();
                     }
                 }
 
@@ -241,7 +244,8 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
                                         if (!androidNetworkUtility.isConnected(getApplicationContext())) {
                                             Toast.makeText(getApplicationContext(), "Aucune connexion au serveur. Veuillez reéssayer plus tard", Toast.LENGTH_LONG).show();
                                         } else {
-                                            new BackgroundTask().execute();
+                                            // Envoyer les données en commençant par le thread qui verifie si le serveur on joignable et ON
+                                            new ServerTask().execute();
                                             isExporting = false;
                                         }
 
@@ -310,6 +314,58 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
     }
 
 
+    private class ServerTask extends AsyncTask<String, Void, Void> {
+        // Required initialization
+
+        private ProgressDialog Dialog = new ProgressDialog(MainActivity.this);
+        private boolean data;
+
+
+        protected void onPreExecute() {
+            Dialog.setMessage("Test disponibilité du serveur...");
+            Dialog.show();
+        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
+            WebService service = retrofit.create(WebService.class);
+            Call<ServerStatus> call = service.getServerStatus();
+            call.enqueue(new Callback<ServerStatus>() {
+                @Override
+                public void onResponse(Call<ServerStatus> call, Response<ServerStatus> response) {
+                    //  Log.i("Result....", response.toString());
+                    status = response.body();
+                    if(status == null){
+                        serverAvailability = false;
+                        Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        if(status.getServer() == 200 && status.isStatus()){
+                            new BackgroundTask().execute();
+                            serverAvailability = true;
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<ServerStatus> call, Throwable t) {
+                    serverAvailability = false;
+                    Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    Log.i("Error...", t.toString());
+                }
+            });
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            Dialog.dismiss();
+            Log.i("DATAAAAAAAAAAA",data+"");
+
+        }
+
+    }
+
+
     private class BackgroundTask extends AsyncTask<String, Void,
             Void> {
         private ProgressDialog Dialog = new ProgressDialog(MainActivity.this);
@@ -373,6 +429,58 @@ public class MainActivity extends AppCompatActivity implements CahierFragment.On
             editor.putLong("com.royken.offset", nombre);
             editor.commit();
         }
+    }
+
+
+    private class UpdateTask extends AsyncTask<String, Void, Void> {
+        // Required initialization
+
+        private ProgressDialog Dialog = new ProgressDialog(MainActivity.this);
+        private boolean data;
+
+
+        protected void onPreExecute() {
+            Dialog.setMessage("Test disponibilité du serveur...");
+            Dialog.show();
+        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
+            WebService service = retrofit.create(WebService.class);
+            Call<ServerStatus> call = service.getServerStatus();
+            call.enqueue(new Callback<ServerStatus>() {
+                @Override
+                public void onResponse(Call<ServerStatus> call, Response<ServerStatus> response) {
+                    //  Log.i("Result....", response.toString());
+                    status = response.body();
+                    if(status == null){
+                        serverAvailability = false;
+                        Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        if(status.getServer() == 200 && status.isStatus()){
+                            new CahierTask().execute();
+                            serverAvailability = true;
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<ServerStatus> call, Throwable t) {
+                    serverAvailability = false;
+                    Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    Log.i("Error...", t.toString());
+                }
+            });
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            Dialog.dismiss();
+            Log.i("DATAAAAAAAAAAA",data+"");
+
+        }
+
     }
 
     private class CahierTask extends AsyncTask<String, Void, Void> {

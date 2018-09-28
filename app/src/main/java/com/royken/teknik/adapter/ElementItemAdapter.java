@@ -18,6 +18,7 @@ import com.royken.teknik.database.DatabaseHelper;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.Reponse;
+import com.royken.teknik.entities.SousOrgane;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class ElementItemAdapter extends BaseAdapter {
     private DatabaseHelper databaseHelper = null;
     private Dao<Reponse,Integer> reponseDao;
     private Dao<Element,Integer> elementDao;
+    SousOrgane so = null;
+    private Dao<SousOrgane,Integer> sousoDao;
 
 
     public ElementItemAdapter(Context context, List<Element> elements) {
@@ -80,11 +83,19 @@ public class ElementItemAdapter extends BaseAdapter {
 
         img.setImageDrawable(drawable);
         */
+        try {
+            sousoDao = getHelper().getSousOrganeDao();
+            so = sousoDao.queryBuilder().where().eq("idServeur", elements.get(position).getSousOrganeId()).queryForFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         TextView tv_Code = (TextView)layout.findViewById(R.id.elementCode);
         tv_Code.setText(elements.get(position).getCode());
         TextView tv_Nom = (TextView)layout.findViewById(R.id.elementNom);
         tv_Nom.setText(elements.get(position).getNom());
         TextView tv_Heure = (TextView)layout.findViewById(R.id.elementHeure);
+        TextView tv_SousOrgane = (TextView)layout.findViewById(R.id.nomSousOrgane);
+        tv_SousOrgane.setText(so.getNom());
         try {
             Element e = elements.get(position);
             reponseDao = getHelper().getReponseDao();

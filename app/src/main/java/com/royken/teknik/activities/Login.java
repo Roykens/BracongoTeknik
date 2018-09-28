@@ -9,6 +9,7 @@ import android.database.SQLException;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +20,21 @@ import com.j256.ormlite.dao.Dao;
 import com.royken.teknik.R;
 import com.royken.teknik.database.DatabaseHelper;
 import com.royken.teknik.database.DatabaseOpenHelper;
+import com.royken.teknik.entities.Bloc;
 import com.royken.teknik.entities.Utilisateur;
+import com.royken.teknik.network.RetrofitBuilder;
+import com.royken.teknik.network.WebService;
+import com.royken.teknik.util.PasswordUtil;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 public class Login extends AppCompatActivity {
@@ -33,7 +45,6 @@ public class Login extends AppCompatActivity {
     public static final String PREFS_LOGIN_NAME = "login";
     public static final String PREFS_PASSWD_NAME = "password";
     private boolean isValide;
-    SharedPreferences settings ;
     SharedPreferences.Editor editor;
     String login;
     String password;
@@ -62,25 +73,31 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private boolean login(String login, String mdp){
         final Dao<Utilisateur, Integer> userDao;
-
         try {
             userDao = getHelper().getUtilisateurDao();
-           Utilisateur u = userDao.queryBuilder().where().eq("login", login).and().eq("mdp", mdp).queryForFirst();
+           //Utilisateur u = userDao.queryBuilder().where().eq("login", login).and().eq("mdp", mdp).queryForFirst();
+            Utilisateur u = userDao.queryBuilder().where().eq("login", login).queryForFirst();
            if(u == null){
                Toast.makeText(getApplicationContext(),"Utilisateur non trouvé",Toast.LENGTH_LONG).show();
            }
             else {
-               SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-               SharedPreferences.Editor editor = settings.edit();
-               editor.putString("com.royken.login", login);
-               editor.putInt("com.royken.userId", u.getId());
-               editor.putBoolean("com.royken.haslogged", true);
-               editor.commit();
+               String pass = PasswordUtil.getSecurePassword(mdp, Base64.decode(u.getSalt(),0));
+               if(pass.equalsIgnoreCase(u.getMdp())){
+                   SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                   SharedPreferences.Editor editor = settings.edit();
+                   editor.putString("com.royken.login", login);
+                   editor.putInt("com.royken.userId", u.getId());
+                   editor.putBoolean("com.royken.haslogged", true);
+                   editor.commit();
+               }
+               else {
+                   Toast.makeText(getApplicationContext(),"Login/MDP incorrect", Toast.LENGTH_LONG).show();
+                   return false;
+               }
                //Toast.makeText(getApplicationContext(),"Connecté : "+ u.getLogin(), Toast.LENGTH_LONG).show();
                return true;
            }
@@ -98,5 +115,4 @@ public class Login extends AppCompatActivity {
         }
         return databaseHelper;
     }
-
 }

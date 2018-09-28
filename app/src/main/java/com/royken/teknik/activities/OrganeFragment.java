@@ -37,8 +37,10 @@ import com.royken.teknik.adapter.OrganeAdapter;
 import com.royken.teknik.adapter.OrganeItemAdapter;
 import com.royken.teknik.database.DatabaseHelper;
 import com.royken.teknik.entities.Bloc;
+import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.Reponse;
+import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
 
@@ -59,6 +61,7 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     private OrganeAdapter organeAdapter;
     private OrganeItemAdapter organeItemAdapter;
     private List<Organe> organes;
+    List<Organe> organesFiltres;
     public static final String PREFS_NAME = "com.royken.teknik.MyPrefsFile";
     SharedPreferences settings ;
     Dao<Utilisateur, Integer> userDao;
@@ -139,6 +142,8 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
 
         final Dao<Bloc, Integer> blocDao;
         final Dao<Organe, Integer> organeDao;
+        Dao<Element, Integer> elementDao;
+        Dao<SousOrgane, Integer> sousOrganeDao;
         List<Zone> zones = new ArrayList<>();
         final Dao<Zone , Integer> zoneDao;
         try {
@@ -148,27 +153,10 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
             int userId = settings.getInt("com.royken.userId", 0);
             u = userDao.queryForId(userId);
 
-
                 zones = zoneDao.queryBuilder().where().like("cahierCode", cahierId).query();
                 chemin.setText("Accueil>Traitement Eau");
                 cheminS = "Traitement Eau";
 
-            /*if(cahierId == 1) {
-                zones = zoneDao.queryBuilder().where().like("cahierCode", "GPE").or().like("cahierCode", "ELE").or().like("cahierCode", "CHA").or().like("cahierCode", "COM").query();
-                chemin.setText("Accueil>Electricité");
-                cheminS = "Electricité";
-            }
-            if(cahierId == 2){
-                zones = zoneDao.queryBuilder().where().like("cahierCode", "UAG").query();
-                chemin.setText("Accueil>Usine à Glace");
-                cheminS = "Usine à Glace";
-            }
-            if(cahierId == 3) {
-                zones = zoneDao.queryBuilder().where().like("cahierCode", "AIR").or().like("cahierCode", "FRO").or().like("cahierCode", "EAU").or().like("cahierCode", "CO2").query();
-                chemin.setText("Accueil>Mécanique");
-                cheminS = "Mécanique";
-            }
-            */
             blocDao = getHelper().getBlocDao();
             List<Bloc> blocss = new ArrayList<>();
             for (Zone z : zones) {
@@ -186,7 +174,40 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
                     organes.add(o);
                 }
             }
-            organeItemAdapter = new OrganeItemAdapter(getActivity(),organes);
+
+            /***********///////////////////////////
+            elementDao =  getHelper().getElementDao();
+            sousOrganeDao = getHelper().getSousOrganeDao();
+            // Toast.makeText(getActivity(),"ID : "+ organeId,Toast.LENGTH_LONG).show();
+
+            List<SousOrgane> sos = new ArrayList<>();
+
+            for (Organe o : organes){
+                List<SousOrgane> sorg = sousOrganeDao.queryBuilder().where().eq("idOrgane",o.getIdServeur()).query();
+                for (SousOrgane so : sorg){
+                    sos.add(so);
+                }
+            }
+
+
+            List<Element> elements = new ArrayList<>();
+            for (SousOrgane so : sos){
+                List<Element> els = elementDao.queryBuilder().where().eq("sousOrganeId", so.getIdServeur()).and().eq("periode",horaireId).query();
+                for (Element e : els){
+                    elements.add(e);
+                }
+            }
+           /* Log.i("ELEMENTS =======",elements.size()+ " == ELMENTS");
+            Log.i("ORGANES =======",organes.size()+ " ===== ORGANES");
+            Log.i("CAHIER CODE =======",cahierId + " ===== CAHIER CODE");
+            Log.i("ZONES =======",zones.size() + " ===== ZONES");
+            Log.i("BLOCS =======",blocss.size() + " ===== BLOCS");
+            */
+            List<Element> elementsFiltres = reduceListElementToSingleSousOrgane(elements);
+            List<SousOrgane> sousOrganesFiltres = listElementConstainsOneElementBySorgane(sos, elementsFiltres);
+            organesFiltres = listOrganeFiltres(organes, sousOrganesFiltres);
+            //*****/////////////////////////////////
+            organeItemAdapter = new OrganeItemAdapter(getActivity(),organesFiltres);
             setListAdapter(organeItemAdapter);
 
         } catch (SQLException e) {
@@ -290,5 +311,83 @@ public class OrganeFragment extends ListFragment implements AdapterView.OnItemCl
     public boolean onQueryTextSubmit(String query)
     {
         return false;
+    }
+
+    /**
+     * Prend un seul élément par sous organe
+     * */
+    private List<Element> reduceListElementToSingleSousOrgane(List<Element> elements){
+        List<Element> result = new ArrayList<>();
+        for (Element e : elements){
+            if(!listElementConstainsOneElement(e,result))
+                result.add(e);
+        }
+        return result;
+    }
+
+    /* Si un element est contenu dans une liste d'éléments
+    * */
+    private boolean listElementConstainsOneElement(Element e, List<Element> elements){
+        if(elements.size() < 1)
+            return false;
+        for (Element el : elements){
+            if(el.getSousOrganeId() == e.getSousOrganeId())
+                return true;
+        }
+        return false;
+    }
+
+    /***
+     * La liste des Sous organes qui ont au moins un élément dans une une liste d'éléments
+     */
+    private List<SousOrgane>listElementConstainsOneElementBySorgane(List<SousOrgane> sousOrganes, List<Element> elements){
+        List<SousOrgane> result = new ArrayList<>();
+        for (SousOrgane so : sousOrganes){
+            if(sousOrganeHasElement(so,elements))
+                result.add(so);
+        }
+        return result;
+
+    }
+
+    /**
+     * Un sous organe a au moins un élément dans une liste d'éléments
+     */
+    private boolean sousOrganeHasElement(SousOrgane so, List<Element> elements){
+        for (Element e : elements){
+            if(e.getSousOrganeId() == so.getIdServeur())
+                return true;
+        }
+        return false;
+    }
+
+    /* Si un organe est contenu dans une liste d'organes
+     * */
+    private boolean listOrganesConstainsOneOrgane(Organe o, List<Organe> organes){
+        if(organes.size() < 1)
+            return false;
+        for (Organe or : organes){
+            if(or.getIdServeur() == o.getIdServeur())
+                return true;
+        }
+        return false;
+    }
+
+    private boolean organeHasSousOrgane(Organe o, List<SousOrgane> sousOrganes){
+        for (SousOrgane so : sousOrganes){
+            if(so.getIdOrgane() == o.getIdServeur())
+                return true;
+        }
+        return false;
+    }
+
+    private List<Organe>listOrganeFiltres(List<Organe> organes, List<SousOrgane> sousOrganes){
+        List<Organe> result = new ArrayList<>();
+        for (Organe o : organes){
+            if(organeHasSousOrgane(o,sousOrganes))
+                result.add(o);
+        }
+        return result;
+
     }
 }

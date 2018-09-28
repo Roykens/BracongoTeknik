@@ -16,6 +16,10 @@ public class RetrofitBuilder {
 
     private Retrofit retrofit;
 
+    public void test(){
+
+    }
+
     public static Retrofit getRetrofit(String url){
         Gson gson = new GsonBuilder()
                 .disableHtmlEscaping()

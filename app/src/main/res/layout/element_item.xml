@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:baselineAligned="false"
-    android:layout_height="fill_parent" tools:context="com.royken.bracongo.mobile.TwoFragment" android:descendantFocusability="afterDescendants">
+    android:layout_height="fill_parent" tools:context="com.royken.teknik.activities.ElementActivity" android:descendantFocusability="afterDescendants">
 
 
         <LinearLayout
@@ -33,13 +33,37 @@
                     android:layout_gravity="fill"
                     android:text="hello"
                     android:textSize="15dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="2"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/elementHeure"
                     android:layout_gravity="right"
                     android:text="hello"
+                    android:textSize="10dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sousO"
+                    android:layout_gravity="fill"
+                    android:text="Sous Organe : "
+                    android:textSize="15dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nomSousOrgane"
+                    android:layout_gravity="right"
                     android:textSize="10dp"
                     android:layout_weight="1"/>
 

@@ -48,7 +48,7 @@
             android:textStyle="bold"
             android:textColor="#ffffff"
             android:inputType="textPassword"
-            android:hint="Mot de passe"
+            android:hint="@string/mot_de_passe_hint"
             android:textColorHint="#ffffff"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -63,6 +63,7 @@
         android:padding="12dp"
         android:textColor="#ffffff"
         android:textAlignment="center"
-        android:text="Connexion"/>
+        android:text="@string/connexion_label"/>
+
 
 </LinearLayout>

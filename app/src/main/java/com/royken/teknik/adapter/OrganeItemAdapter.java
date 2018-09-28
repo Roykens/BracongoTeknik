@@ -15,9 +15,14 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.j256.ormlite.dao.Dao;
 import com.royken.teknik.R;
+import com.royken.teknik.database.DatabaseHelper;
+import com.royken.teknik.entities.Bloc;
 import com.royken.teknik.entities.Organe;
+import com.royken.teknik.entities.Zone;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +31,15 @@ import java.util.List;
  */
 public class OrganeItemAdapter extends BaseAdapter implements Filterable {
 
+    private DatabaseHelper databaseHelper = null;
     private List<Organe> organes;
     private List<Organe> orig;
     private Context mContext;
     private LayoutInflater mInflater;
+    Bloc b = null;
+    Zone z = null;
+    private Dao<Bloc,Integer> blocDao;
+    private Dao<Zone,Integer> zoneDao;
 
     public OrganeItemAdapter(Context mContext, List<Organe> organes) {
         this.mContext = mContext;
@@ -60,6 +70,15 @@ public class OrganeItemAdapter extends BaseAdapter implements Filterable {
         } else {
             layout = (FrameLayout) convertView;
         }
+        try {
+            blocDao = getHelper().getBlocDao();
+            zoneDao = getHelper().getZoneDao();
+            b = blocDao.queryBuilder().where().eq("idServeur", organes.get(position).getIdBloc()).queryForFirst();
+            z = zoneDao.queryBuilder().where().eq("idServeur", b.getIdZone()).queryForFirst();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         ImageView img = (ImageView)layout.findViewById(R.id.image_view);
        // ImageView img2 = (ImageView)layout.findViewById(R.id.image_view1);
@@ -76,9 +95,12 @@ public class OrganeItemAdapter extends BaseAdapter implements Filterable {
         img.setImageDrawable(drawable);
 
         TextView tv_Nom = (TextView)layout.findViewById(R.id.nomOrgane);
+        TextView tv_Zone = (TextView)layout.findViewById(R.id.nomBloc);
         tv_Nom.setText(organes.get(position).getNom());
+        tv_Zone.setText(z.getNom());
 
         tv_Nom.setTag(position);
+        tv_Zone.setTag(position);
         img.setTag(position);
         return layout;
     }
@@ -124,5 +146,13 @@ public class OrganeItemAdapter extends BaseAdapter implements Filterable {
     @Override
     public boolean isEmpty() {
         return organes.isEmpty();
+    }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            //databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+            databaseHelper = new DatabaseHelper(mContext);
+        }
+        return databaseHelper;
     }
 }

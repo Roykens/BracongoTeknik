@@ -48,6 +48,11 @@ public class Utilisateur implements Serializable {
     @DatabaseField
     private String nom;
 
+    @Expose(serialize = true, deserialize = true)
+    @SerializedName("salt")
+    @DatabaseField
+    private String salt;
+
     public Utilisateur() {
     }
 
@@ -105,5 +110,13 @@ public class Utilisateur implements Serializable {
 
     public void setIdServeur(int idServeur) {
         this.idServeur = idServeur;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

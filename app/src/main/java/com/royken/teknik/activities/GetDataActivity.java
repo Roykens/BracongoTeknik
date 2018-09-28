@@ -25,6 +25,7 @@ import com.royken.teknik.entities.Cahier;
 import com.royken.teknik.entities.Element;
 import com.royken.teknik.entities.Organe;
 import com.royken.teknik.entities.Periode;
+import com.royken.teknik.entities.ServerStatus;
 import com.royken.teknik.entities.SousOrgane;
 import com.royken.teknik.entities.Utilisateur;
 import com.royken.teknik.entities.Zone;
@@ -58,6 +59,8 @@ public class GetDataActivity extends AppCompatActivity {
     private List<Periode> periodes;
     TextView _urlLink;
     private String url;
+    private ServerStatus status;
+    private boolean serverAvailability ;
 
     public static final String PREFS_NAME = "com.royken.teknik.MyPrefsFile";
 
@@ -94,7 +97,7 @@ public class GetDataActivity extends AppCompatActivity {
                     if (!androidNetworkUtility.isConnected(getApplicationContext())) {
                         Toast.makeText(getApplicationContext(), "Aucune connexion au serveur. Veuillez reéssayer plus tard", Toast.LENGTH_LONG).show();
                     } else {
-                        new CahierTask().execute();
+                        new ServerTask().execute();
                     }
 
 
@@ -125,6 +128,57 @@ public class GetDataActivity extends AppCompatActivity {
             });
             */
         }
+    }
+
+    private class ServerTask extends AsyncTask<String, Void, Void> {
+        // Required initialization
+
+         private ProgressDialog Dialog = new ProgressDialog(GetDataActivity.this);
+        private boolean data;
+
+
+        protected void onPreExecute() {
+            Dialog.setMessage("Test disponibilité du serveur...");
+            Dialog.show();
+        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+            Retrofit retrofit = RetrofitBuilder.getRetrofit(url+"/");
+            WebService service = retrofit.create(WebService.class);
+            Call<ServerStatus> call = service.getServerStatus();
+            call.enqueue(new Callback<ServerStatus>() {
+                @Override
+                public void onResponse(Call<ServerStatus> call, Response<ServerStatus> response) {
+                    //  Log.i("Result....", response.toString());
+                    status = response.body();
+                    if(status == null){
+                        serverAvailability = false;
+                        Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        if(status.getServer() == 200 && status.isStatus()){
+                            new CahierTask().execute();
+                            serverAvailability = true;
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<ServerStatus> call, Throwable t) {
+                    serverAvailability = false;
+                    Toast.makeText(getApplicationContext(),"Serveur injoignable !!!",Toast.LENGTH_LONG).show();
+                    Log.i("Error...", t.toString());
+                }
+            });
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            Dialog.dismiss();
+            Log.i("DATAAAAAAAAAAA",data+"");
+
+        }
+
     }
 
     private class CahierTask extends AsyncTask<String, Void, Void> {
